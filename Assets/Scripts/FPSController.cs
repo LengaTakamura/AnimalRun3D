@@ -8,27 +8,32 @@ public class FPSController : MonoBehaviour
     float speed = 0.1f;
 
     public GameObject cam;
-    Quaternion cameraRot, characterRot;
+    Quaternion cameraRot, characterRot; //回転を表す変数
     float Xsensityvity = 3f, Ysensityvity = 3f;
 
     bool cursorLock = true;
 
-    //変数の宣言(角度の制限用)
-    float minX = -90f, maxX = 90f;
+    float minX = -90f, maxX = 90f;　//変数の宣言(角度の制限用)
+
+    Rigidbody rb;
+
+    [SerializeField]float jumpSpeed = 10f;
 
     // Start is called before the first frame update
     void Start()
     {
-        cameraRot = cam.transform.localRotation;
-        characterRot = transform.localRotation;
+        cameraRot = cam.transform.localRotation;　//cameraの回転を取得
+        characterRot = transform.localRotation;   //playerの回転を取得
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float xRot = Input.GetAxis("Mouse X") * Ysensityvity;
-        float yRot = Input.GetAxis("Mouse Y") * Xsensityvity;
+        float xRot = Input.GetAxis("Mouse X") * Ysensityvity;　//マウスのX方向の動きを検知して動きを格納
+        float yRot = Input.GetAxis("Mouse Y") * Xsensityvity;　//マウスのY方向の動きを検知して動きを格納
 
+        //Input.GetAxis("Mouse ○")で取得したマウスの値は、transform.Rotateでxyを入れ替える
         cameraRot *= Quaternion.Euler(-yRot, 0, 0);
         characterRot *= Quaternion.Euler(0, xRot, 0);
 
@@ -42,17 +47,22 @@ public class FPSController : MonoBehaviour
         UpdateCursorLock();
     }
 
-    private void FixedUpdate()
+    private void FixedUpdate() //一定秒数ごとに呼ばれる　TimeManagerから秒数を変更可能
     {
         x = 0;
         z = 0;
 
-        x = Input.GetAxisRaw("Horizontal") * speed;
-        z = Input.GetAxisRaw("Vertical") * speed;
+        x = Input.GetAxisRaw("Horizontal") * speed;　//水平方向のキー入力を検知してスピードとかけ合わせる
+        z = Input.GetAxisRaw("Vertical") * speed;　　//垂直方向のキー入力を検知してスピードとかけ合わせる
 
         //transform.position += new Vector3(x,0,z);
 
         transform.position += cam.transform.forward * z + cam.transform.right * x;
+
+        if (Input.GetKeyDown(KeyCode.Space)) 
+        {
+            rb.velocity = Vector3.up * jumpSpeed;
+        }
     }
 
 

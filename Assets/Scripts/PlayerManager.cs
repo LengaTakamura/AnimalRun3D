@@ -15,6 +15,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        Debug.Log(controller);
     }
 
     void Update()
