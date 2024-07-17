@@ -5,7 +5,7 @@ using UnityEngine;
 public class FPSController : MonoBehaviour
 {
     float x, z;
-    float speed = 0.1f;
+    [SerializeField]public float speed = 0.1f;
 
     public GameObject cam;
     Quaternion cameraRot, characterRot; //‰ñ“]‚ğ•\‚·•Ï”
@@ -19,12 +19,15 @@ public class FPSController : MonoBehaviour
 
     [SerializeField]float jumpSpeed = 10f;
 
+    bool isJumping;
+
     // Start is called before the first frame update
     void Start()
     {
         cameraRot = cam.transform.localRotation;@//camera‚Ì‰ñ“]‚ğæ“¾
         characterRot = transform.localRotation;   //player‚Ì‰ñ“]‚ğæ“¾
         rb = GetComponent<Rigidbody>();
+        animal = Animal.normal;
     }
 
     // Update is called once per frame
@@ -45,6 +48,14 @@ public class FPSController : MonoBehaviour
 
 
         UpdateCursorLock();
+
+        if (Input.GetKeyDown(KeyCode.Space)&& !isJumping &&animal ==Animal.horse)
+        {
+            rb.velocity = Vector3.up * jumpSpeed;
+
+            isJumping = true;
+        }
+
     }
 
     private void FixedUpdate() //ˆê’è•b”‚²‚Æ‚ÉŒÄ‚Î‚ê‚é@TimeManager‚©‚ç•b”‚ğ•ÏX‰Â”\
@@ -57,12 +68,10 @@ public class FPSController : MonoBehaviour
 
         //transform.position += new Vector3(x,0,z);
 
-        transform.position += cam.transform.forward * z + cam.transform.right * x;
+        transform.position += cam.transform.forward * z + cam.transform.right * x; 
+        //ƒJƒƒ‰‚ÌŒü‚«(‚»‚ê‚¼‚ê‚Ì³‚Ì•ûŒü‚É“®‚«‚ğ‰Á‚¦‚é)‚©‚ç“®‚«‚ğì‚é
 
-        if (Input.GetKeyDown(KeyCode.Space)) 
-        {
-            rb.velocity = Vector3.up * jumpSpeed;
-        }
+        
     }
 
 
@@ -106,6 +115,26 @@ public class FPSController : MonoBehaviour
 
         return q;
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        if(collision.gameObject.tag == "Ground")
+        {
+            isJumping =false;
+        }
+
+        if (collision.gameObject.tag == "Horse")
+        {
+            Debug.Log("hit horse");
+            animal = Animal.horse;
+            
+        }
+
+    }
+    enum Animal { horse, crab, normal, owl, frog }
+
+    Animal animal;
 
 
 }
