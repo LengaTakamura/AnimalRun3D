@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FPSController : MonoBehaviour
 {
     float x, z;
-    [SerializeField]public float speed = 0.1f;
+    [SerializeField] public float speed = 0.1f;
 
     public GameObject cam;
     Quaternion cameraRot, characterRot; //回転を表す変数
@@ -17,9 +15,11 @@ public class FPSController : MonoBehaviour
 
     Rigidbody rb;
 
-    [SerializeField]float jumpSpeed = 10f;
+    [SerializeField] float jumpSpeed = 10f;
 
-    bool isJumping;
+    public bool isJumping;
+
+    MeshRenderer MeshRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +28,7 @@ public class FPSController : MonoBehaviour
         characterRot = transform.localRotation;   //playerの回転を取得
         rb = GetComponent<Rigidbody>();
         animal = Animal.normal;
+        MeshRenderer =GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
@@ -49,29 +50,29 @@ public class FPSController : MonoBehaviour
 
         UpdateCursorLock();
 
-        if (Input.GetKeyDown(KeyCode.Space)&& !isJumping &&animal ==Animal.horse)
-        {
-            rb.velocity = Vector3.up * jumpSpeed;
-
-            isJumping = true;
-        }
+        //if (Input.GetKeyDown(KeyCode.Space) && !isJumping && animal == Animal.horse)
+        //{
+        //    //rb.AddForce(new Vector3(x * 10, jumpSpeed, z * 10), ForceMode.Impulse);
+        //    rb.velocity = new Vector3(x * 10, jumpSpeed, z * 10);
+        //    isJumping = true;
+        //}
 
     }
 
     private void FixedUpdate() //一定秒数ごとに呼ばれる　TimeManagerから秒数を変更可能
     {
-        x = 0;
-        z = 0;
 
-        x = Input.GetAxisRaw("Horizontal") * speed;　//水平方向のキー入力を検知してスピードとかけ合わせる
-        z = Input.GetAxisRaw("Vertical") * speed;　　//垂直方向のキー入力を検知してスピードとかけ合わせる
-
-        //transform.position += new Vector3(x,0,z);
-
-        transform.position += cam.transform.forward * z + cam.transform.right * x; 
+        //垂直方向のキー入力を検知してスピードとかけ合わせる
+        if (isJumping == false)
+        {
+            //transform.position += new Vector3(x,0,z);
+            x = Input.GetAxisRaw("Horizontal") * speed; //水平方向のキー入力を検知してスピードとかけ合わせる
+            z = Input.GetAxisRaw("Vertical") * speed;
+            rb.velocity += transform.forward * z + transform.right * x;
+        }
         //カメラの向き(それぞれの正の方向に動きを加える)から動きを作る
 
-        
+
     }
 
 
@@ -119,22 +120,22 @@ public class FPSController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 
-        if(collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground")
         {
-            isJumping =false;
+            isJumping = false;
         }
 
         if (collision.gameObject.tag == "Horse")
         {
             Debug.Log("hit horse");
             animal = Animal.horse;
-            
+
         }
 
     }
-    enum Animal { horse, crab, normal, owl, frog }
+    public enum Animal { horse, crab, normal, owl, frog }
 
-    Animal animal;
+    public Animal animal;
 
 
 }
