@@ -206,11 +206,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400258, guid: 233b230b862737048af21a9549932a0e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -24.82
+      value: -25.1
       objectReference: {fileID: 0}
     - target: {fileID: 400258, guid: 233b230b862737048af21a9549932a0e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -19.6
+      value: -19.52
       objectReference: {fileID: 0}
     - target: {fileID: 400258, guid: 233b230b862737048af21a9549932a0e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -244,6 +244,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: e34f3845d85abb148823d47ae9c3bd47, type: 2}
+    - target: {fileID: 13700000, guid: 233b230b862737048af21a9549932a0e, type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -506,7 +510,7 @@ Transform:
   m_GameObject: {fileID: 1060702723}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: -16.59, y: -18.4, z: -50.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
