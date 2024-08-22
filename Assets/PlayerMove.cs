@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -11,9 +10,10 @@ public class PlayerMove : MonoBehaviour
     private Vector3 moveDirection;
     Animator m_anim;
     bool _isGround;
-
-    
-
+    float forward = 0f;
+    Vector3 lastPos;
+    Vector3 defalut;
+    public float beside = 10f;
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -22,30 +22,44 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-        LookAhead();
-        //Vector3 defalut = transform.position - lastPos;
-        //lastPos = transform.position;
-        //地面についている時
-        if (controller.isGrounded)
+        if (controller.isGrounded && Input.GetKey(KeyCode.W))
         {
-            moveDirection = new Vector3(0, 0, Input.GetAxis("Vertical"));
-            //Transform.TransformDirectionはローカル空間からワールド空間へ方向Vectorを変換する
-            moveDirection = transform.TransformDirection(moveDirection) * speed;
+            forward = 1f;
+            moveDirection = new Vector3(0, 0, forward);
+            Vector3 velocity = this.transform.rotation * new Vector3(0, 0, forward * speed);
+            moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
+            Debug.Log("go ahead");
             //ジャンプ↓
-            if (Input.GetButton("Jump"))
-            {
-                moveDirection.y = jumpSpeed;
-            }
         }
-        //重力分変更する
+
+        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
+        {
+            // オブジェクトの回転
+            this.transform.Rotate(Vector3.up, beside);
+        }
+        //←キーが押されていて→キーが押されていない時
+        else if (!Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A))
+        {
+            // オブジェクトの回転
+            this.transform.Rotate(Vector3.up, -1 * beside);
+        }
+
+
+        if (controller.isGrounded && Input.GetButton("Jump"))
+        {
+            Debug.Log("Jump");
+            moveDirection.y = jumpSpeed;
+        }
+        //LookAhead();
+
+        //moveDirection.y -= gravity * Time.deltaTime;
         moveDirection.y -= gravity * Time.deltaTime;
         controller.Move(moveDirection * Time.deltaTime);
-        
-       
+
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (controller.tag =="Ground") 
+        if (controller.tag == "Ground")
         {
             _isGround = true;
         }
@@ -57,9 +71,9 @@ public class PlayerMove : MonoBehaviour
             _isGround = false;
         }
     }
-    private void LateUpdate()
+    private void FixedUpdate()
     {
-        if(m_anim)
+        if (m_anim)
         {
             m_anim.SetFloat("SpeedX", Mathf.Abs(moveDirection.x));
             m_anim.SetFloat("SpeedY", moveDirection.y);
@@ -67,19 +81,21 @@ public class PlayerMove : MonoBehaviour
             m_anim.SetFloat("SpeedZ", Mathf.Abs(moveDirection.z));
 
         }
-        
+
     }
 
     void LookAhead()
     {
+        defalut = transform.position - lastPos;
+        lastPos = transform.position;
 
-        if(moveDirection.magnitude == 0)
+        if (defalut == Vector3.zero)
         {
             return;
         }
-        else if (moveDirection.magnitude > 0.1f) 
-        {
-            transform.rotation = Quaternion.LookRotation(moveDirection);
-        }
+
+
+        var rotation = Quaternion.LookRotation(defalut, Vector3.up);
+        transform.rotation = rotation;
     }
 }
