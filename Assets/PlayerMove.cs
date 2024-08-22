@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -14,6 +13,7 @@ public class PlayerMove : MonoBehaviour
     Vector3 lastPos;
     Vector3 defalut;
     public float beside = 10f;
+    public float backspeed;
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -30,6 +30,14 @@ public class PlayerMove : MonoBehaviour
             moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
             Debug.Log("go ahead");
             //ÉWÉÉÉìÉvÅ´
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            forward = -1f;
+            moveDirection = new Vector3(0, 0, forward);
+            Vector3 velocity = this.transform.rotation * new Vector3(0, 0, forward * backspeed);
+            moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
+            Debug.Log("back");
         }
 
         if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
@@ -82,20 +90,5 @@ public class PlayerMove : MonoBehaviour
 
         }
 
-    }
-
-    void LookAhead()
-    {
-        defalut = transform.position - lastPos;
-        lastPos = transform.position;
-
-        if (defalut == Vector3.zero)
-        {
-            return;
-        }
-
-
-        var rotation = Quaternion.LookRotation(defalut, Vector3.up);
-        transform.rotation = rotation;
     }
 }
