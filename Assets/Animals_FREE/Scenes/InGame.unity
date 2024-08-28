@@ -206,11 +206,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400258, guid: 233b230b862737048af21a9549932a0e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.6
+      value: 5.71
       objectReference: {fileID: 0}
     - target: {fileID: 400258, guid: 233b230b862737048af21a9549932a0e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.67
+      value: -12.29
       objectReference: {fileID: 0}
     - target: {fileID: 400258, guid: 233b230b862737048af21a9549932a0e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -257,10 +257,10 @@ PrefabInstance:
       addedObject: {fileID: 912255703}
     - targetCorrespondingSourceObject: {fileID: 100258, guid: 233b230b862737048af21a9549932a0e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 912255701}
+      addedObject: {fileID: 912255705}
     - targetCorrespondingSourceObject: {fileID: 100258, guid: 233b230b862737048af21a9549932a0e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 912255706}
+      addedObject: {fileID: 912255708}
   m_SourcePrefab: {fileID: 100100000, guid: 233b230b862737048af21a9549932a0e, type: 3}
 --- !u!1 &486324065
 GameObject:
@@ -361,8 +361,52 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 100258, guid: 233b230b862737048af21a9549932a0e, type: 3}
   m_PrefabInstance: {fileID: 13432237}
   m_PrefabAsset: {fileID: 0}
---- !u!143 &912255701
-CharacterController:
+--- !u!114 &912255703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912255700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 139454c45d446e44aabb3d5cc5870c1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 30
+  jumpSpeed: 10
+  _isGround: 1
+  beside: 0.15
+  backspeed: 20
+--- !u!54 &912255705
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912255700}
+  serializedVersion: 4
+  m_Mass: 5
+  m_Drag: 5
+  m_AngularDrag: 5
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &912255708
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -380,52 +424,8 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2.09
-  m_Radius: 1.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.4, z: 0}
---- !u!114 &912255703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 912255700}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 139454c45d446e44aabb3d5cc5870c1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 3
-  jumpSpeed: 6
-  gravity: 10
-  beside: 1
-  backspeed: 1
---- !u!64 &912255706
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 912255700}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  m_Size: {x: 1.87, y: 2.74, z: 4.59}
+  m_Center: {x: 0, y: 1.31, z: -0.23}
 --- !u!1 &1060702723
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 1969221816}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -556,7 +556,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.99, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1969221817
 MeshRenderer:
