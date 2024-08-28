@@ -206,11 +206,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400258, guid: 233b230b862737048af21a9549932a0e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5
+      value: 10.6
       objectReference: {fileID: 0}
     - target: {fileID: 400258, guid: 233b230b862737048af21a9549932a0e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -19.81
+      value: -12.67
       objectReference: {fileID: 0}
     - target: {fileID: 400258, guid: 233b230b862737048af21a9549932a0e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -399,10 +399,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 139454c45d446e44aabb3d5cc5870c1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 3
   jumpSpeed: 6
   gravity: 10
   beside: 1
+  backspeed: 1
 --- !u!64 &912255706
 MeshCollider:
   m_ObjectHideFlags: 0

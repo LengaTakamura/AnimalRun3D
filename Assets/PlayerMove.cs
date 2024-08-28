@@ -22,12 +22,14 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        moveDirection.y -= gravity * Time.deltaTime;
         if (controller.isGrounded && Input.GetKey(KeyCode.W))
         {
             forward = 1f;
             moveDirection = new Vector3(0, 0, forward);
             Vector3 velocity = this.transform.rotation * new Vector3(0, 0, forward * speed);
             moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
+            controller.Move(moveDirection * Time.deltaTime);
             Debug.Log("go ahead");
             //ジャンプ↓
         }
@@ -37,16 +39,17 @@ public class PlayerMove : MonoBehaviour
             moveDirection = new Vector3(0, 0, forward);
             Vector3 velocity = this.transform.rotation * new Vector3(0, 0, forward * backspeed);
             moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
+            controller.Move(moveDirection * Time.deltaTime);
             Debug.Log("back");
         }
 
-        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S))
         {
             // オブジェクトの回転
             this.transform.Rotate(Vector3.up, beside);
         }
         //←キーが押されていて→キーが押されていない時
-        else if (!Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A))
+        else if (!Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S))
         {
             // オブジェクトの回転
             this.transform.Rotate(Vector3.up, -1 * beside);
@@ -61,9 +64,8 @@ public class PlayerMove : MonoBehaviour
         //LookAhead();
 
         //moveDirection.y -= gravity * Time.deltaTime;
-        moveDirection.y -= gravity * Time.deltaTime;
-        controller.Move(moveDirection * Time.deltaTime);
-
+        //moveDirection.y -= gravity * Time.deltaTime;
+        //controller.Move(moveDirection * Time.deltaTime);
     }
     private void OnCollisionEnter(Collision collision)
     {
