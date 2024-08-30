@@ -67,6 +67,7 @@ public class PlayerMove : MonoBehaviour
             m_anim.SetFloat("SpeedZ", Mathf.Abs(moveDirection.z));
             m_anim.SetFloat("Moving", forward);
             m_anim.SetBool("Running", _running);
+            m_anim.SetBool("IsGround", _isGround);
         }
 
     }
@@ -74,6 +75,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W))
         {
+            
             _acceleration = 0.05f;
             _running = false;
             forward = 1f;
@@ -98,6 +100,8 @@ public class PlayerMove : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.S))
         {
+            ResetSpeed();
+            _running = false;   
             forward = -1f;
             moveDirection = new Vector3(0, 0, forward);
             Vector3 velocity = this.transform.rotation * new Vector3(0, 0, forward);
@@ -105,6 +109,8 @@ public class PlayerMove : MonoBehaviour
             rb.AddForce(moveDirection * backspeed);
             //controller.Move(moveDirection * Time.deltaTime);
             Debug.Log("back");
+            
+
         }
 
     }

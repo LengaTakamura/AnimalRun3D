@@ -442,7 +442,7 @@ MonoBehaviour:
   jumpSpeed: 10
   _isGround: 1
   beside: 0.08
-  backspeed: 3
+  backspeed: 4
   _running: 0
   _acceleration: 0.05
 --- !u!54 &912255705
