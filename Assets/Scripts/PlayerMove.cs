@@ -69,25 +69,25 @@ public class PlayerMove : MonoBehaviour
 
         if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))
         {
+            beside = 0.15f;
             // オブジェクトの回転
             if (Input.GetKey(KeyCode.S))
             {
                 beside = 0.08f;
 
             }
-            beside = 0.15f;
             this.transform.Rotate(Vector3.up, beside);
         }
         //←キーが押されていて→キーが押されていない時
         else if (!Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A) && (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))
         {
             // オブジェクトの回転
+            beside = 0.15f;
             if (Input.GetKey(KeyCode.S))
             {
                 beside = 0.08f;
 
             }
-            beside = 0.15f;
             this.transform.Rotate(Vector3.up, -1 * beside);
         }
 
