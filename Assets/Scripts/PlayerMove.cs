@@ -19,30 +19,28 @@ public class PlayerMove : MonoBehaviour
     public bool _running;
     public float _acceleration = 0.05f;
     Vector3 velocity;
+    HorseState horseState;
+    [SerializeField]AudioClip _audioClip;
+    AudioSource _audioSource;
+    bool _isPlaying;
+    float time;
     void Start()
-    {
-        //controller = GetComponent<CharacterController>();
+    {    
         m_anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         _isGround = true;
+        _audioSource = GetComponent<AudioSource>(); 
+        horseState = HorseState.Idol;
+        _isPlaying = true;
     }
 
     void Update()
     {
-        if (rb.velocity.x == 0f && rb.velocity.z == 0f)
-        {
-            ResetSpeed();
-            forward = 0f;
-            _running = false;
-        }
-
+        Debug.Log(horseState);  
+        Idol();
         Moving();
         Rotating();
-        if (_isGround && Input.GetButton("Jump"))
-        {
-            Debug.Log("Jump");
-            rb.velocity = new Vector3(velocity.x, jumpSpeed, velocity.z);
-        }
+        Jumpimg();  
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -56,6 +54,7 @@ public class PlayerMove : MonoBehaviour
         if (collision.gameObject.tag == "Ground")
         {
             _isGround = false;
+            
         }
     }
     private void FixedUpdate()
@@ -69,13 +68,40 @@ public class PlayerMove : MonoBehaviour
             m_anim.SetBool("Running", _running);
             m_anim.SetBool("IsGround", _isGround);
         }
+       
 
     }
+    void Idol()
+    {
+       
+        if (rb.velocity.x == 0f && rb.velocity.z == 0f )
+        {
+            ResetSpeed();
+            forward = 0f;
+            _running = false;
+            horseState = HorseState.Idol;
+
+            //if (_isPlaying)
+            //{
+            //    //InvokeRepeating("SoundEffect", 1, 3);
+                
+            //    _isPlaying = false;
+            //    StartCoroutine(nameof(WaitSeconds));
+            //}
+           
+        }
+    }
+    //IEnumerator WaitSeconds()
+    //{
+    //    yield return new WaitForSeconds(3f);
+    //    _isPlaying = true;
+    //}
     void Moving()
     {
-        if (Input.GetKey(KeyCode.W))
+
+        if (Input.GetKey(KeyCode.W) )
         {
-            
+            horseState = HorseState.Walking;
             _acceleration = 0.05f;
             _running = false;
             forward = 1f;
@@ -83,12 +109,13 @@ public class PlayerMove : MonoBehaviour
             velocity = this.transform.rotation * new Vector3(0, 0, forward);
             moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
             rb.AddForce(moveDirection * speed);
-            Debug.Log("go ahead");
             speed += _acceleration;
+            
+            
             if (speed >= 55f)
             {
-                Running();
-
+                _running = true;
+                horseState = HorseState.Running;
             }
 
             if (speed >= 60f)
@@ -100,6 +127,7 @@ public class PlayerMove : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.S))
         {
+            
             ResetSpeed();
             _running = false;   
             forward = -1f;
@@ -107,10 +135,6 @@ public class PlayerMove : MonoBehaviour
             Vector3 velocity = this.transform.rotation * new Vector3(0, 0, forward);
             moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
             rb.AddForce(moveDirection * backspeed);
-            //controller.Move(moveDirection * Time.deltaTime);
-            Debug.Log("back");
-            
-
         }
 
     }
@@ -141,6 +165,19 @@ public class PlayerMove : MonoBehaviour
             this.transform.Rotate(Vector3.up, -1 * beside);
         }
     }
+    void Jumpimg()
+    {
+        if (_isGround && Input.GetButton("Jump"))
+        {
+            _isPlaying = true;
+            rb.velocity = new Vector3(moveDirection.x, jumpSpeed, moveDirection.z);
+            if (_isPlaying)
+            {
+                 _audioSource.PlayOneShot(_audioClip);
+                _isPlaying = false;
+            }
+        }
+    }
 
     void ResetSpeed()
     {
@@ -150,8 +187,9 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    void Running()
+    enum HorseState
     {
-        _running = true;
+        Running,Idol,Walking,Back
     }
+    
 }
