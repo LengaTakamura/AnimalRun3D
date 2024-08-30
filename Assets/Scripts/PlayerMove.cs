@@ -19,7 +19,7 @@ public class PlayerMove : MonoBehaviour
     public bool _running;
     public float _acceleration = 0.05f;
     Vector3 velocity;
-    HorseState horseState;
+    public HorseState horseState;
     [SerializeField]AudioClip _audioClip;
     AudioSource _audioSource;
     bool _isPlaying;
@@ -40,7 +40,11 @@ public class PlayerMove : MonoBehaviour
         Idol();
         Moving();
         Rotating();
-        Jumpimg();  
+        Jumpimg();
+        if (!_isGround)
+        {
+            horseState = HorseState.Jumping;
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -74,34 +78,27 @@ public class PlayerMove : MonoBehaviour
     void Idol()
     {
        
-        if (rb.velocity.x == 0f && rb.velocity.z == 0f )
+        if (rb.velocity.x == 0f && rb.velocity.z == 0f && _isGround )
         {
             ResetSpeed();
             forward = 0f;
             _running = false;
             horseState = HorseState.Idol;
-
-            //if (_isPlaying)
-            //{
-            //    //InvokeRepeating("SoundEffect", 1, 3);
-                
-            //    _isPlaying = false;
-            //    StartCoroutine(nameof(WaitSeconds));
-            //}
+            
            
         }
     }
-    //IEnumerator WaitSeconds()
-    //{
-    //    yield return new WaitForSeconds(3f);
-    //    _isPlaying = true;
-    //}
+    
     void Moving()
     {
 
         if (Input.GetKey(KeyCode.W) )
         {
-            horseState = HorseState.Walking;
+            
+            if (_isGround)
+            {
+                horseState = HorseState.Walking;
+            }
             _acceleration = 0.05f;
             _running = false;
             forward = 1f;
@@ -110,6 +107,7 @@ public class PlayerMove : MonoBehaviour
             moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
             rb.AddForce(moveDirection * speed);
             speed += _acceleration;
+
             
             
             if (speed >= 55f)
@@ -127,7 +125,11 @@ public class PlayerMove : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            
+            if (_isGround)
+            {
+                horseState = HorseState.Back;
+            }
+
             ResetSpeed();
             _running = false;   
             forward = -1f;
@@ -187,9 +189,9 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    enum HorseState
+    public enum HorseState
     {
-        Running,Idol,Walking,Back
+        Running,Idol,Walking,Back,Jumping,
     }
     
 }
