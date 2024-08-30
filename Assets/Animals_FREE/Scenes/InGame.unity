@@ -441,7 +441,7 @@ MonoBehaviour:
   speed: 5
   jumpSpeed: 10
   _isGround: 1
-  beside: 0.15
+  beside: 0.08
   backspeed: 3
   _running: 0
   _acceleration: 0.05

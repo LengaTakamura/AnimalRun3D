@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
@@ -16,6 +18,7 @@ public class PlayerMove : MonoBehaviour
     public float backspeed;
     public bool _running;
     public float _acceleration = 0.05f;
+    Vector3 velocity;
     void Start()
     {
         //controller = GetComponent<CharacterController>();
@@ -32,70 +35,13 @@ public class PlayerMove : MonoBehaviour
             forward = 0f;
             _running = false;
         }
-        if (Input.GetKey(KeyCode.W))
-        {
-            _acceleration = 0.05f;
-            _running = false;
-            forward = 1f;
-            moveDirection = new Vector3(0, 0, forward);
-            Vector3 velocity = this.transform.rotation * new Vector3(0, 0, forward);
-            moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
-            rb.AddForce(moveDirection * speed);
-            Debug.Log("go ahead");
-            speed += _acceleration;
-            if (speed >= 55f)
-            {
-                Running();
 
-            }
-
-            if (speed >= 60f)
-            {
-                speed = 60f;
-                _acceleration = 0f;
-            }
-
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            forward = -1f;
-            moveDirection = new Vector3(0, 0, forward);
-            Vector3 velocity = this.transform.rotation * new Vector3(0, 0, forward);
-            moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
-            rb.AddForce(moveDirection * backspeed);
-            //controller.Move(moveDirection * Time.deltaTime);
-            Debug.Log("back");
-        }
-
-        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))
-        {
-            beside = 0.15f;
-            // オブジェクトの回転
-            if (Input.GetKey(KeyCode.S))
-            {
-                beside = 0.08f;
-
-            }
-            this.transform.Rotate(Vector3.up, beside);
-        }
-        //←キーが押されていて→キーが押されていない時
-        else if (!Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A) && (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))
-        {
-            // オブジェクトの回転
-            beside = 0.15f;
-            if (Input.GetKey(KeyCode.S))
-            {
-                beside = 0.08f;
-
-            }
-            this.transform.Rotate(Vector3.up, -1 * beside);
-        }
-
-
+        Moving();
+        Rotating();
         if (_isGround && Input.GetButton("Jump"))
         {
             Debug.Log("Jump");
-            rb.velocity = new Vector3(0, jumpSpeed, 0);
+            rb.velocity = new Vector3(velocity.x, jumpSpeed, velocity.z);
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -124,6 +70,72 @@ public class PlayerMove : MonoBehaviour
         }
 
     }
+    void Moving()
+    {
+        if (Input.GetKey(KeyCode.W))
+        {
+            _acceleration = 0.05f;
+            _running = false;
+            forward = 1f;
+            moveDirection = new Vector3(0, 0, forward);
+            velocity = this.transform.rotation * new Vector3(0, 0, forward);
+            moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
+            rb.AddForce(moveDirection * speed);
+            Debug.Log("go ahead");
+            speed += _acceleration;
+            if (speed >= 55f)
+            {
+                Running();
+
+            }
+
+            if (speed >= 60f)
+            {
+                speed = 60f;
+                _acceleration = 0f;
+            }
+
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            forward = -1f;
+            moveDirection = new Vector3(0, 0, forward);
+            Vector3 velocity = this.transform.rotation * new Vector3(0, 0, forward);
+            moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
+            rb.AddForce(moveDirection * backspeed);
+            //controller.Move(moveDirection * Time.deltaTime);
+            Debug.Log("back");
+        }
+
+    }
+
+    void Rotating()
+    {
+        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))
+        {
+            //beside = 0.15f;
+            // オブジェクトの回転
+            if (Input.GetKey(KeyCode.S))
+            {
+                beside = 0.08f;
+
+            }
+            this.transform.Rotate(Vector3.up, beside);
+        }
+        //←キーが押されていて→キーが押されていない時
+        else if (!Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A) && (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))
+        {
+            // オブジェクトの回転
+            //beside = 0.15f;
+            if (Input.GetKey(KeyCode.S))
+            {
+                beside = 0.08f;
+
+            }
+            this.transform.Rotate(Vector3.up, -1 * beside);
+        }
+    }
+
     void ResetSpeed()
     {
         if (_running == false)
