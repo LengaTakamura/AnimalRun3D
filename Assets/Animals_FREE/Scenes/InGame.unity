@@ -448,7 +448,6 @@ MonoBehaviour:
   jumpSpeed: 6
   gravity: 10
   beside: 1
-  backspeed: 5
 --- !u!64 &912255706
 MeshCollider:
   m_ObjectHideFlags: 0
