@@ -84,8 +84,6 @@ public class PlayerMove : MonoBehaviour
             forward = 0f;
             _running = false;
             horseState = HorseState.Idol;
-            
-           
         }
     }
     
@@ -173,6 +171,7 @@ public class PlayerMove : MonoBehaviour
         {
             _isPlaying = true;
             rb.velocity = new Vector3(moveDirection.x, jumpSpeed, moveDirection.z);
+
             if (_isPlaying)
             {
                  _audioSource.PlayOneShot(_audioClip);
