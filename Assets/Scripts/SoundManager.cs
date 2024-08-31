@@ -9,7 +9,7 @@ public class SoundManager : MonoBehaviour
     bool _isPlayingIdol;
     bool _isPlayingWalk;
     bool _isPlayingRun;
-   
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,49 +25,53 @@ public class SoundManager : MonoBehaviour
     {
         if (_playerMove.horseState == PlayerMove.HorseState.Running)
         {
-           
+
             if (_isPlayingRun)
             {
                 _audioSource.PlayOneShot(clip[0]);
                 _isPlayingRun = false;
-                StartCoroutine(WaitSeconds(5));
+                StartCoroutine(WaitSecondsR(1f));
             }
         }
-       
-
-
-        if (_playerMove.horseState == PlayerMove.HorseState.Walking)
+        else if (_playerMove.horseState == PlayerMove.HorseState.Walking)
         {
-            
+
             if (_isPlayingWalk)
             {
                 _audioSource.PlayOneShot(clip[1]);
                 _isPlayingWalk = false;
-                StartCoroutine(WaitSeconds(5));
+                StartCoroutine(WaitSecondsW(0.8f));
             }
         }
-        
-
-        if (_playerMove.horseState != PlayerMove.HorseState.Jumping)
+        else if (_playerMove.horseState != PlayerMove.HorseState.Jumping)
         {
-           
+
             if (_isPlayingIdol)
             {
+                Debug.Log("soundIdol");
                 _audioSource.PlayOneShot(clip[2]);
                 _isPlayingIdol = false;
-                StartCoroutine(WaitSeconds(3));
+                StartCoroutine(WaitSeconds(3f));
             }
 
         }
-       
-
-
     }
-    IEnumerator WaitSeconds(int second)
+    IEnumerator WaitSeconds(float second)
     {
         yield return new WaitForSeconds(second);
         _isPlayingIdol = true;
-        _isPlayingWalk = true;
+        //_isPlayingWalk = true;
+        //_isPlayingRun = true;
+    }
+    IEnumerator WaitSecondsW(float speed)
+    {
+        yield return new WaitForSeconds(speed);
+        _isPlayingWalk = true;  
+    }
+    IEnumerator WaitSecondsR(float speed)
+    {
+        yield return new WaitForSeconds(speed);
         _isPlayingRun = true;
     }
+
 }

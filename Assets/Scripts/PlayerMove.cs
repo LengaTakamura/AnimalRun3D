@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
@@ -22,8 +23,11 @@ public class PlayerMove : MonoBehaviour
     public HorseState horseState;
     [SerializeField]AudioClip _audioClip;
     AudioSource _audioSource;
-    bool _isPlaying;
     float time;
+    bool _isPlaying;
+    float _speed;
+    public float intertia;
+    Vector3 objforward;
     void Start()
     {    
         m_anim = GetComponent<Animator>();
@@ -36,11 +40,14 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(horseState);  
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        _speed = rb.velocity.magnitude;
         Idol();
         Moving();
         Rotating();
         Jumpimg();
+        objforward = transform.forward;
         if (!_isGround)
         {
             horseState = HorseState.Jumping;
@@ -90,7 +97,7 @@ public class PlayerMove : MonoBehaviour
     void Moving()
     {
 
-        if (Input.GetKey(KeyCode.W) )
+        if (Input.GetKey(KeyCode.W) && _isGround )
         {
             
             if (_isGround)
@@ -167,15 +174,14 @@ public class PlayerMove : MonoBehaviour
     }
     void Jumpimg()
     {
-        if (_isGround && Input.GetButton("Jump"))
+        if (_isGround && Input.GetButtonDown("Jump"))
         {
-            _isPlaying = true;
-            rb.velocity = new Vector3(moveDirection.x, jumpSpeed, moveDirection.z);
-
+            objforward.y =jumpSpeed;
+            rb.velocity = objforward * _speed * intertia;
+            Debug.Log(rb.velocity);
             if (_isPlaying)
             {
-                 _audioSource.PlayOneShot(_audioClip);
-                _isPlaying = false;
+                _audioSource.PlayOneShot(_audioClip);
             }
         }
     }
