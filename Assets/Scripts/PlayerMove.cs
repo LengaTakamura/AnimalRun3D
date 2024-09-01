@@ -40,14 +40,14 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+ 
+        objforward = transform.forward;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        _speed = rb.velocity.magnitude;
         Idol();
         Moving();
         Rotating();
         Jumpimg();
-        objforward = transform.forward;
         if (!_isGround)
         {
             horseState = HorseState.Jumping;
@@ -79,46 +79,56 @@ public class PlayerMove : MonoBehaviour
             m_anim.SetBool("Running", _running);
             m_anim.SetBool("IsGround", _isGround);
         }
-       
+
 
     }
     void Idol()
     {
-       
-        if (rb.velocity.x == 0f && rb.velocity.z == 0f && _isGround )
+
+        if ( rb.velocity.magnitude == 0f )
         {
-            ResetSpeed();
             forward = 0f;
-            _running = false;
             horseState = HorseState.Idol;
         }
+        else if (!Input.GetKey(KeyCode.S) && _isGround)
+        {
+            horseState = HorseState.Walking;
+        }
     }
+        
+    
     
     void Moving()
     {
 
-        if (Input.GetKey(KeyCode.W) && _isGround )
+        
+
+        if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.Space))
         {
-            
-            if (_isGround)
-            {
-                horseState = HorseState.Walking;
-            }
-            _acceleration = 0.05f;
+
+
+            horseState = HorseState.Walking;
+            _acceleration = 0.1f;
             _running = false;
             forward = 1f;
             moveDirection = new Vector3(0, 0, forward);
             velocity = this.transform.rotation * new Vector3(0, 0, forward);
             moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
-            rb.AddForce(moveDirection * speed);
+           // rb.AddForce(moveDirection * speed);
+            rb.velocity = moveDirection * speed * 0.1f;
             speed += _acceleration;
+            
 
-            
-            
+
             if (speed >= 55f)
             {
                 _running = true;
                 horseState = HorseState.Running;
+            }
+            else
+            {
+                horseState = HorseState.Walking;
+
             }
 
             if (speed >= 60f)
@@ -128,7 +138,16 @@ public class PlayerMove : MonoBehaviour
             }
 
         }
-        else if (Input.GetKey(KeyCode.S))
+        else if( speed == 60f && Input.GetKeyUp(KeyCode.W))    
+        {
+            _running = false ;
+            ResetSpeed();
+
+        }
+
+
+
+        if (Input.GetKey(KeyCode.S))
         {
             if (_isGround)
             {
@@ -154,7 +173,7 @@ public class PlayerMove : MonoBehaviour
             // オブジェクトの回転
             if (Input.GetKey(KeyCode.S))
             {
-                beside = 0.08f;
+                beside = 0.05f;
 
             }
             this.transform.Rotate(Vector3.up, beside);
@@ -166,7 +185,7 @@ public class PlayerMove : MonoBehaviour
             //beside = 0.15f;
             if (Input.GetKey(KeyCode.S))
             {
-                beside = 0.08f;
+                beside = 0.05f;
 
             }
             this.transform.Rotate(Vector3.up, -1 * beside);
@@ -176,9 +195,9 @@ public class PlayerMove : MonoBehaviour
     {
         if (_isGround && Input.GetButtonDown("Jump"))
         {
-            objforward.y =jumpSpeed;
-            rb.velocity = objforward * _speed * intertia;
-            Debug.Log(rb.velocity);
+           
+            rb.AddForce( new Vector3 (objforward.x * intertia ,1 * jumpSpeed   , objforward.z * intertia),ForceMode.Impulse);
+            Debug.Log(1 * jumpSpeed);
             if (_isPlaying)
             {
                 _audioSource.PlayOneShot(_audioClip);
