@@ -28,6 +28,9 @@ public class PlayerMove : MonoBehaviour
     float _speed;
     public float intertia;
     Vector3 objforward;
+    public float GroundedOffset = -0.14f;
+    public float GroundedRadius = 0.5f;
+    public LayerMask GroundLayers;
     void Start()
     {    
         m_anim = GetComponent<Animator>();
@@ -44,6 +47,7 @@ public class PlayerMove : MonoBehaviour
         objforward = transform.forward;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        GroundedCheck();
         Idol();
         Moving();
         Rotating();
@@ -52,6 +56,7 @@ public class PlayerMove : MonoBehaviour
         {
             horseState = HorseState.Jumping;
         }
+        
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -211,6 +216,18 @@ public class PlayerMove : MonoBehaviour
         {
             speed = 30f;
         }
+    }
+
+    public void GroundedCheck()
+    {
+        // オフセットを計算して球の位置を設定する
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
+
+        if (Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore))
+        {
+            _isGround = true;
+        }
+           
     }
 
     public enum HorseState
