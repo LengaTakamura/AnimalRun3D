@@ -135,6 +135,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ground_03
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 661464e19c087564badb2bf5230c842c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 661464e19c087564badb2bf5230c842c, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 661464e19c087564badb2bf5230c842c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 12.82359
@@ -1275,8 +1283,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 52251318779949315, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
+      propertyPath: gravity
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 52251318779949315, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
+      propertyPath: _running
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 52251318779949315, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: backspeed
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 52251318779949315, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
+      propertyPath: jumpSpeed
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 52251318779949315, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: GroundedOffset
