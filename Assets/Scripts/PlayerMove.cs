@@ -31,14 +31,17 @@ public class PlayerMove : MonoBehaviour
     public float GroundedOffset = -0.14f;
     public float GroundedRadius = 0.5f;
     public LayerMask GroundLayers;
+    public float gravity = -9.81f;
+    RaycastHit hit;
+    public float groundDistance = 0.4f; // 接地判定の半径
     void Start()
     {    
         m_anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        _isGround = true;
         _audioSource = GetComponent<AudioSource>(); 
         horseState = HorseState.Idol;
         _isPlaying = true;
+        GroundLayers = LayerMask.GetMask("Ground");
     }
 
     void Update()
@@ -58,21 +61,21 @@ public class PlayerMove : MonoBehaviour
         }
         
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            _isGround = true;
-        }
-    }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            _isGround = false;
-            
-        }
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "Ground")
+    //    {
+    //        _isGround = true;
+    //    }
+    //}
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "Ground")
+    //    {
+    //        _isGround = false;
+
+    //    }
+    //}
     private void FixedUpdate()
     {
         if (m_anim)
@@ -89,8 +92,8 @@ public class PlayerMove : MonoBehaviour
     }
     void Idol()
     {
-
-        if ( rb.velocity.magnitude == 0f )
+        Debug.Log(rb.velocity );
+        if ( rb.velocity.x == 0f && rb.velocity.z == 0f  && _isGround) 
         {
             forward = 0f;
             horseState = HorseState.Idol;
@@ -222,12 +225,28 @@ public class PlayerMove : MonoBehaviour
     {
         // オフセットを計算して球の位置を設定する
         Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
+        bool sphereHit = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
+        bool rayHit = Physics.Raycast(transform.position, Vector3.down, out hit, groundDistance + 0.1f, GroundLayers);
 
-        if (Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore))
+        _isGround = sphereHit || rayHit;
+
+        if (_isGround && rb.velocity.y < 0)
         {
-            _isGround = true;
+          
+            // Y軸の速度をリセットして、キャラクターが地面に吸着するようにする
+            rb.velocity = new Vector3(rb.velocity.x, -3f, rb.velocity.z);
         }
-           
+
+
+        if (!_isGround)
+        {
+            rb.velocity += Vector3.up * gravity * Time.deltaTime;
+        }
+
+
+
+
+
     }
 
     public enum HorseState
