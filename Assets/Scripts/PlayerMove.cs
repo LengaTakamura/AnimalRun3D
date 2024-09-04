@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static PlayerMove;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class PlayerMove : MonoBehaviour
     public float _acceleration = 0.05f;
     Vector3 velocity;
     public HorseState horseState;
-    [SerializeField]AudioClip _audioClip;
+    [SerializeField] AudioClip _audioClip;
     AudioSource _audioSource;
     float time;
     bool _isPlaying;
@@ -35,10 +36,10 @@ public class PlayerMove : MonoBehaviour
     RaycastHit hit;
     public float groundDistance = 0.4f; // ê⁄ínîªíËÇÃîºåa
     void Start()
-    {    
+    {
         m_anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        _audioSource = GetComponent<AudioSource>(); 
+        _audioSource = GetComponent<AudioSource>();
         horseState = HorseState.Idol;
         _isPlaying = true;
         GroundLayers = LayerMask.GetMask("Ground");
@@ -46,7 +47,7 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
- 
+
         objforward = transform.forward;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -55,11 +56,12 @@ public class PlayerMove : MonoBehaviour
         Moving();
         Rotating();
         Jumpimg();
+
         if (!_isGround)
         {
             horseState = HorseState.Jumping;
         }
-        
+
     }
     //private void OnCollisionEnter(Collision collision)
     //{
@@ -78,6 +80,11 @@ public class PlayerMove : MonoBehaviour
     //}
     private void FixedUpdate()
     {
+
+
+       
+
+
         if (m_anim)
         {
             m_anim.SetFloat("SpeedX", Mathf.Abs(moveDirection.x));
@@ -86,21 +93,27 @@ public class PlayerMove : MonoBehaviour
             m_anim.SetFloat("Moving", forward);
             m_anim.SetBool("Running", _running);
             m_anim.SetBool("IsGround", _isGround);
+            m_anim.SetBool("Running2", horseState == HorseState.Running);
+            m_anim.SetBool("Walking", horseState == HorseState.Walking);
+            m_anim.SetBool("Idol", horseState == HorseState.Idol);
+            m_anim.SetBool("Back", horseState == HorseState.Back);
+            m_anim.SetBool("Jumping", horseState == HorseState.Jumping);
         }
-
+       
 
     }
     void Idol()
     {
-        Debug.Log(rb.velocity );
-        if ( rb.velocity.x == 0f && rb.velocity.z == 0f  && _isGround) 
+        Debug.Log(rb.velocity);
+        if (rb.velocity.x == 0f && rb.velocity.z == 0f && _isGround )
         {
             forward = 0f;
             horseState = HorseState.Idol;
         }
-        else if (!Input.GetKey(KeyCode.S) && _isGround)
+
+        if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S))
         {
-            horseState = HorseState.Walking;
+            horseState = HorseState.Idol;
         }
     }
         
@@ -146,8 +159,9 @@ public class PlayerMove : MonoBehaviour
             }
 
         }
-        else if( speed == 60f && Input.GetKeyUp(KeyCode.W))    
+        else if( speed >= 55f && Input.GetKeyUp(KeyCode.W))    
         {
+            horseState = HorseState.Idol;
             _running = false ;
             ResetSpeed();
 
@@ -155,12 +169,10 @@ public class PlayerMove : MonoBehaviour
 
 
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S) && _isGround)
         {
-            if (_isGround)
-            {
-                horseState = HorseState.Back;
-            }
+           
+            horseState = HorseState.Back;
 
             ResetSpeed();
             _running = false;   
