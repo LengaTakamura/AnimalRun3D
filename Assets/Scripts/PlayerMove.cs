@@ -84,7 +84,7 @@ public class PlayerMove : MonoBehaviour
     }
     void Idol()
     {
-        Debug.Log(rb.velocity);
+        //Debug.Log(rb.velocity);
         if (rb.velocity.x == 0f && rb.velocity.z == 0f && _isGround)
         {
             forward = 0f;

@@ -323,8 +323,33 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &245970008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245970000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c128b544cfb68af4d95a211e975ad03f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isGround: 0
+  jumpPower: 8.78
+  intertia: 5.57
+  canJump: 0
+  falseCheck: 0
+  turnPower: 1
+  GroundedOffset: -0.14
+  GroundedRadius: 0.5
+  GroundLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  gravity: -9.81
+  groundDistance: 0.4
 --- !u!1001 &313951680
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -960,6 +985,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1278844794585240, guid: b207a581a12ca467ca2fa266eedc7b2f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 245970004}
+    - targetCorrespondingSourceObject: {fileID: 1278844794585240, guid: b207a581a12ca467ca2fa266eedc7b2f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 245970008}
   m_SourcePrefab: {fileID: 100100000, guid: b207a581a12ca467ca2fa266eedc7b2f, type: 3}
 --- !u!1 &1445459431 stripped
 GameObject:
@@ -1746,6 +1774,10 @@ PrefabInstance:
     - target: {fileID: 1250439354381340765, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250439354381340765, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1250439354381634685, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: m_LocalPosition.x
