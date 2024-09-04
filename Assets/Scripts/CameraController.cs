@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
 
         //------カメラの回転------
 
-        //マウスの移動量を取得
+        // マウスの移動量を取得
         float mx = Input.GetAxis("Mouse X");
         float my = Input.GetAxis("Mouse Y");
 
