@@ -43,6 +43,7 @@ public class PlayerMove : MonoBehaviour
         horseState = HorseState.Idol;
         _isPlaying = true;
         GroundLayers = LayerMask.GetMask("Ground");
+        
     }
 
     void Update()
@@ -81,9 +82,12 @@ public class PlayerMove : MonoBehaviour
     private void FixedUpdate()
     {
 
+        if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.Space))
+        {
+            _acceleration = 0.1f;
+            SpeedUp();  
 
-       
-
+        }
 
         if (m_anim)
         {
@@ -129,7 +133,6 @@ public class PlayerMove : MonoBehaviour
 
 
             horseState = HorseState.Walking;
-            _acceleration = 0.1f;
             _running = false;
             forward = 1f;
             moveDirection = new Vector3(0, 0, forward);
@@ -137,7 +140,7 @@ public class PlayerMove : MonoBehaviour
             moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
            // rb.AddForce(moveDirection * speed);
             rb.velocity = moveDirection * speed * 0.1f;
-            speed += _acceleration;
+ 
             
 
 
@@ -180,7 +183,7 @@ public class PlayerMove : MonoBehaviour
             moveDirection = new Vector3(0, 0, forward);
             Vector3 velocity = this.transform.rotation * new Vector3(0, 0, forward);
             moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
-            rb.AddForce(moveDirection * backspeed);
+            rb.velocity = (moveDirection * backspeed);
         }
 
     }
@@ -259,6 +262,11 @@ public class PlayerMove : MonoBehaviour
 
 
 
+    }
+
+    void SpeedUp()
+    {
+        speed += _acceleration;
     }
 
     public enum HorseState
