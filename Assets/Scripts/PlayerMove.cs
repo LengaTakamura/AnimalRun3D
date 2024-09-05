@@ -153,7 +153,7 @@ public class PlayerMove : MonoBehaviour
 
     void Rotating()
     {
-        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))
+        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) )
         {
             //beside = 0.15f;
             // オブジェクトの回転
@@ -165,7 +165,7 @@ public class PlayerMove : MonoBehaviour
             this.transform.Rotate(Vector3.up, beside);
         }
         //←キーが押されていて→キーが押されていない時
-        else if (!Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A) && (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)))
+        else if (!Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A) )
         {
             // オブジェクトの回転
             //beside = 0.15f;
