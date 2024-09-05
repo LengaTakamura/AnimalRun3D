@@ -85,7 +85,7 @@ public class PlayerMove : MonoBehaviour
     void Idol()
     {
         //Debug.Log(rb.velocity);
-        if (rb.velocity.x == 0f && rb.velocity.z == 0f && _isGround)
+        if (rb.velocity.x < 0.1f && rb.velocity.z < 0.1f && _isGround)
         {
             forward = 0f;
             horseState = HorseState.Idol;
@@ -111,7 +111,7 @@ public class PlayerMove : MonoBehaviour
             // rb.AddForce(moveDirection * speed);
             rb.velocity = moveDirection * speed * 0.1f;
 
-            if (speed >= 55f)
+            if (speed >= 40f)
             {
                 _running = true;
                 horseState = HorseState.Running;
@@ -188,6 +188,14 @@ public class PlayerMove : MonoBehaviour
             {
                 _audioSource.PlayOneShot(_audioClip);
             }
+
+            
+        }
+
+        if(horseState == HorseState.Jumping && Input.GetKeyDown(KeyCode.S))
+        {
+            intertia = 0;
+            horseState = HorseState.Back;
         }
     }
     void ResetSpeed()
