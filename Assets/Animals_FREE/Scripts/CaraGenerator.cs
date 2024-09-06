@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class CaraGenerator : MonoBehaviour
 {
+
+    [SerializeField] GameObject horse;
+    [SerializeField] GameObject kangaroo;
     // Start is called before the first frame update
     void Start()
     {
+
+        
+
        
     }
 

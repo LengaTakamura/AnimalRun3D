@@ -1,4 +1,6 @@
+using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -27,6 +29,7 @@ public class PlayerMove : MonoBehaviour
     public float gravity = -9.81f;
     public float groundDistance = 0.4f; // 接地判定の半径
     public bool isGameover;
+    public float rotationSpeed = 5.0f;
     RaycastHit hit;
     void Start()
     {
@@ -41,16 +44,15 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-
+        GroundedCheck();
         objforward = transform.forward;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        GroundedCheck();
         Idol();
         Moving();
         Rotating();
         Jumpimg();
-
+       
         if (!_isGround)
         {
             horseState = HorseState.Jumping;
@@ -59,8 +61,9 @@ public class PlayerMove : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Debug.Log(rb.velocity);
+        
 
+        Horizontal();
         if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.Space))
         {
             _acceleration = 0.1f;
@@ -109,7 +112,7 @@ public class PlayerMove : MonoBehaviour
             forward = 1f;
             moveDirection = new Vector3(0, 0, forward);
             velocity = this.transform.rotation * new Vector3(0, 0, forward);
-            moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
+            moveDirection = new Vector3(velocity.x, 0f , velocity.z);
             // rb.AddForce(moveDirection * speed);
             rb.velocity = moveDirection * speed * 0.1f;
 
@@ -147,7 +150,7 @@ public class PlayerMove : MonoBehaviour
             forward = -1f;
             moveDirection = new Vector3(0, 0, forward);
             Vector3 velocity = this.transform.rotation * new Vector3(0, 0, forward);
-            moveDirection = new Vector3(velocity.x, moveDirection.y, velocity.z);
+            moveDirection = new Vector3(velocity.x, 0f, velocity.z);
             rb.velocity = (moveDirection * backspeed);
         }
 
@@ -184,8 +187,8 @@ public class PlayerMove : MonoBehaviour
         if (_isGround && Input.GetButtonDown("Jump"))
         {
 
-            rb.AddForce(new Vector3(objforward.x * intertia, 1 * jumpSpeed, objforward.z * intertia), ForceMode.Impulse);
-            Debug.Log(1 * jumpSpeed);
+           rb.AddForce(new Vector3(objforward.x * intertia, 1 * jumpSpeed, objforward.z * intertia), ForceMode.Impulse);
+           // rb.velocity = (new Vector3(objforward.x * intertia , jumpSpeed, objforward.z * intertia));
             if (_isPlaying)
             {
                 _audioSource.PlayOneShot(_audioClip);
@@ -209,40 +212,86 @@ public class PlayerMove : MonoBehaviour
     }
     public void GroundedCheck()
     {
+       
         // オフセットを計算して球の位置を設定する
         Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
         bool sphereHit = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
         bool rayHit = Physics.Raycast(transform.position, Vector3.down, out hit, groundDistance + 0.1f, GroundLayers);
-
+        
+    
         _isGround = sphereHit || rayHit;
+       
+    
+        transform.Rotate(Vector3.Scale(Vector3.left, hit.normal),Space.Self);
+        //if(_isGround) { Debug.Log(hit.normal); }
+        
 
-        if (_isGround && rb.velocity.y < 0)
+        if (_isGround && rb.velocity.y == 0 )
         {
-
             // Y軸の速度をリセットして、キャラクターが地面に吸着するようにする
-            rb.velocity = new Vector3(rb.velocity.x, -3f, rb.velocity.z);
+          // rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+
+
         }
+
+
+            //transform.Rotate(Vector3.left , )
+            //var transform1 = Vector3.Scale(transform.up, hit.normal);
+            //transform.Rotate(transform1 * Time.deltaTime); 
+        
 
 
         if (!_isGround)
         {
             rb.velocity += Vector3.up * gravity * Time.deltaTime;
         }
+        
     }
     void SpeedUp()
     {
         speed += _acceleration;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Water")
+        if (collision.gameObject.tag == "Water")
         {
             isGameover = true;
+
         }
+
+
+        if (collision.gameObject.tag == "Tree")
+        {
+            rb.velocity = Vector3.zero.normalized;
+            Debug.Log("hit");
+
+        }
+        Debug.Log(collision.gameObject.tag);
     }
     public enum HorseState
     {
         Running, Idol, Walking, Back, Jumping,
     }
+
+    void Horizontal()
+    {
+        float rotatex = transform.eulerAngles.x;
+        float rotatez = transform.eulerAngles.z;
+        Debug.Log(rotatez);
+
+        if (_isGround && rotatex < 334)
+        {
+            if (rotatex > 0)
+            {
+                //transform.Rotate(Vector3.Scale(Vector3.right, hit.normal), Space.Self);
+                transform.Rotate(Vector3.right);
+            }
+
+        }
+
+
+
+    }
+
 }
