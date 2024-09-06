@@ -220,11 +220,29 @@ public class PlayerMove : MonoBehaviour
         
     
         _isGround = sphereHit || rayHit;
-       
-    
-        transform.Rotate(Vector3.Scale(Vector3.left, hit.normal),Space.Self);
+
+        // Debug.Log(Vector3.Angle(Vector3.up, hit.normal));
+        Debug.DrawLine(transform.position, hit.point, Color.red);
+        Debug.DrawRay(hit.point, hit.normal, Color.green);
+
+        Vector3 ray = (transform.position -hit.point ).normalized;
+        //Vector3 nor = hit.normal;
+        Debug.Log(hit.normal);
+        //float vect =  Vector3.Angle(ray, nor);
+
+        Vector3 direction = hit.normal.normalized;
+        Quaternion qua =  Quaternion.FromToRotation(direction,ray );
+
+        transform.rotation = qua * transform.rotation  ;
+
+
+        //Debug.Log( hit.normal);
+        //Vector3 vect = Vector3.ProjectOnPlane(transform.forward, hit.normal);
+        //Quaternion targetRotation = Quaternion.LookRotation(vect, hit.normal);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        //transform.Rotate(Vector3.Scale(Vector3.left, hit.normal),Space.Self);
         //if(_isGround) { Debug.Log(hit.normal); }
-        
+
 
         if (_isGround && rb.velocity.y == 0 )
         {
@@ -278,14 +296,14 @@ public class PlayerMove : MonoBehaviour
     {
         float rotatex = transform.eulerAngles.x;
         float rotatez = transform.eulerAngles.z;
-        Debug.Log(rotatez);
+       // Debug.Log(rotatez);
 
         if (_isGround && rotatex < 334)
         {
             if (rotatex > 0)
             {
                 //transform.Rotate(Vector3.Scale(Vector3.right, hit.normal), Space.Self);
-                transform.Rotate(Vector3.right);
+                //transform.Rotate(Vector3.right);
             }
 
         }
