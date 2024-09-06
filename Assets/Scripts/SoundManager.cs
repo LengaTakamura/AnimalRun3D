@@ -48,7 +48,7 @@ public class SoundManager : MonoBehaviour
 
             if (_isPlayingIdol)
             {
-                Debug.Log("soundIdol");
+               
                 _audioSource.PlayOneShot(clip[2]);
                 _isPlayingIdol = false;
                 StartCoroutine(WaitSeconds(3f));

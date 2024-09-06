@@ -16,7 +16,7 @@ public class PlayerMove : MonoBehaviour
     public float backspeed;
     public bool _running;
     public float _acceleration = 0.05f;
-    Vector3 velocity;
+    Vector3 _vect;
     public HorseState horseState;
     [SerializeField] AudioClip _audioClip;
     AudioSource _audioSource;
@@ -61,8 +61,8 @@ public class PlayerMove : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        
 
+       
         Horizontal();
         if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.Space))
         {
@@ -89,7 +89,7 @@ public class PlayerMove : MonoBehaviour
     }
     void Idol()
     {
-        //Debug.Log(rb.velocity);
+        
         if (rb.velocity.x < 0.1f && rb.velocity.z < 0.1f && _isGround)
         {
             forward = 0f;
@@ -111,10 +111,9 @@ public class PlayerMove : MonoBehaviour
             _running = false;
             forward = 1f;
             moveDirection = new Vector3(0, 0, forward);
-            velocity = this.transform.rotation * new Vector3(0, 0, forward);
-            moveDirection = new Vector3(velocity.x, 0f , velocity.z);
-            // rb.AddForce(moveDirection * speed);
-            rb.velocity = moveDirection * speed * 0.1f;
+            _vect = this.transform.rotation * new Vector3(0, 0, forward);
+            moveDirection = new Vector3(_vect.x, 0, _vect.z);
+            rb.velocity = moveDirection * speed * 0.1f + (Vector3.up * rb.velocity.y);
 
             if (speed >= 40f)
             {
@@ -149,9 +148,10 @@ public class PlayerMove : MonoBehaviour
             _running = false;
             forward = -1f;
             moveDirection = new Vector3(0, 0, forward);
-            Vector3 velocity = this.transform.rotation * new Vector3(0, 0, forward);
-            moveDirection = new Vector3(velocity.x, 0f, velocity.z);
-            rb.velocity = (moveDirection * backspeed);
+            Vector3 vec = this.transform.rotation * new Vector3(0, 0, forward);
+            moveDirection = new Vector3(vec.x, 0, vec.z);
+            rb.velocity = (moveDirection * backspeed) + (Vector3.up * rb.velocity.y);
+
         }
 
     }
@@ -188,7 +188,6 @@ public class PlayerMove : MonoBehaviour
         {
 
            rb.AddForce(new Vector3(objforward.x * intertia, 1 * jumpSpeed, objforward.z * intertia), ForceMode.Impulse);
-           // rb.velocity = (new Vector3(objforward.x * intertia , jumpSpeed, objforward.z * intertia));
             if (_isPlaying)
             {
                 _audioSource.PlayOneShot(_audioClip);
@@ -221,48 +220,7 @@ public class PlayerMove : MonoBehaviour
     
         _isGround = sphereHit || rayHit;
 
-        // Debug.Log(Vector3.Angle(Vector3.up, hit.normal));
-        Debug.DrawLine(transform.position, hit.point, Color.red);
-        Debug.DrawRay(hit.point, hit.normal, Color.green);
-
-        Vector3 ray = (transform.position -hit.point ).normalized;
-        //Vector3 nor = hit.normal;
-        Debug.Log(hit.normal);
-        //float vect =  Vector3.Angle(ray, nor);
-
-        Vector3 direction = hit.normal.normalized;
-        Quaternion qua =  Quaternion.FromToRotation(direction,ray );
-
-        transform.rotation = qua * transform.rotation  ;
-
-
-        //Debug.Log( hit.normal);
-        //Vector3 vect = Vector3.ProjectOnPlane(transform.forward, hit.normal);
-        //Quaternion targetRotation = Quaternion.LookRotation(vect, hit.normal);
-        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-        //transform.Rotate(Vector3.Scale(Vector3.left, hit.normal),Space.Self);
-        //if(_isGround) { Debug.Log(hit.normal); }
-
-
-        if (_isGround && rb.velocity.y == 0 )
-        {
-            // Y軸の速度をリセットして、キャラクターが地面に吸着するようにする
-          // rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-
-
-        }
-
-
-            //transform.Rotate(Vector3.left , )
-            //var transform1 = Vector3.Scale(transform.up, hit.normal);
-            //transform.Rotate(transform1 * Time.deltaTime); 
         
-
-
-        if (!_isGround)
-        {
-            rb.velocity += Vector3.up * gravity * Time.deltaTime;
-        }
         
     }
     void SpeedUp()
@@ -277,15 +235,6 @@ public class PlayerMove : MonoBehaviour
             isGameover = true;
 
         }
-
-
-        if (collision.gameObject.tag == "Tree")
-        {
-            rb.velocity = Vector3.zero.normalized;
-            Debug.Log("hit");
-
-        }
-        Debug.Log(collision.gameObject.tag);
     }
     public enum HorseState
     {
