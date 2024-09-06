@@ -12,16 +12,12 @@ public class StopManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("collision.gameObject.tag");
         Debug.Log(collision.gameObject.tag);
     }
 
-    
+
+
 }

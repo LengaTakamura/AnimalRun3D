@@ -228,14 +228,17 @@ public class PlayerMove : MonoBehaviour
         speed += _acceleration;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Water")
-        {
-            isGameover = true;
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "Water")
+    //    {
+    //        isGameover = true;
 
-        }
-    }
+    //    }
+    //    Debug.Log(collision.gameObject.tag);
+
+
+    //}
     public enum HorseState
     {
         Running, Idol, Walking, Back, Jumping,
