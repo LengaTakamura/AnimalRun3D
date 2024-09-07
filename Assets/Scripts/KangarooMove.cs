@@ -53,18 +53,18 @@ public class KangarooMove : MonoBehaviour
             falseCheck = false;
             canJump = true;
             StartCoroutine(nameof(Jumping));
-            UnityEngine.Debug.Log('s');
+      
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && !falseCheck && _isGround)
         {
             canJump = false;
-            UnityEngine.Debug.Log('f');
+        
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && canJump && _isGround)
         {
-            UnityEngine.Debug.Log('j');
+      
             rb.velocity = new Vector3(forward.x * intertia, jumpPower, forward.z * intertia);
             canJump = false;
         }
@@ -78,8 +78,7 @@ public class KangarooMove : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             falseCheck = true;
-            UnityEngine.Debug.Log('t');
-
+    
         }
     }
 

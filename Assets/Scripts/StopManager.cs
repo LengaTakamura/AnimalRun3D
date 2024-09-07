@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class StopManager : MonoBehaviour
 {
-   
+    GameObject obj;
+    Rigidbody rb;
     // Start is called before the first frame update
     void Start()
     {
-        GameObject obj = transform.parent.gameObject;
+         obj = transform.parent.gameObject;
+
+        rb = obj.GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("collision.gameObject.tag");
-        Debug.Log(collision.gameObject.tag);
+    // Update is calleasd once per frame
+    private void OnTriggerEnter(Collider other)
+    {       
+        Vector3 vect = (obj.transform.position - other.transform.position).normalized;
+        rb.velocity = (vect + (Vector3.up * rb.velocity.y));
+       
     }
 
 
