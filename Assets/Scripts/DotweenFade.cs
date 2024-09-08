@@ -1,22 +1,27 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DotweenFade : MonoBehaviour
 {
     // Start is called before the first frame update
-    CanvasGroup canvasGroup;
-    public float fadeTime;
+    Image image;
+
+    public float fadeTime = 3f;
     void Start()
     {
+        image = GetComponent<Image>();
         
     }
 
-   public  void FadeOut()
+    public void FadeOut()
     {
-        canvasGroup = GameObject.Find("FadePanel").GetComponent<CanvasGroup>();
-        canvasGroup.alpha = 0f;
-        canvasGroup.DOFade(1f, fadeTime);
+        DOTween.ToAlpha(
+
+            () => image.color,
+            color => image.color = color,
+            1f,
+            fadeTime
+        );
     }
 }

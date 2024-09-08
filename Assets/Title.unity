@@ -145,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4792744829959946, guid: 63591e4acb3e6b14589aacfa1c8ffb29, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.67
+      value: -0.52
       objectReference: {fileID: 0}
     - target: {fileID: 4792744829959946, guid: 63591e4acb3e6b14589aacfa1c8ffb29, type: 3}
       propertyPath: m_LocalPosition.z
@@ -451,7 +451,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2858604049732686615, guid: 59513c2364f18694fab71dd310d87076, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.8
+      value: -0.93
       objectReference: {fileID: 0}
     - target: {fileID: 2858604049732686615, guid: 59513c2364f18694fab71dd310d87076, type: 3}
       propertyPath: m_LocalPosition.z
@@ -804,7 +804,7 @@ GameObject:
   - component: {fileID: 1623260196}
   - component: {fileID: 1623260199}
   - component: {fileID: 1623260198}
-  - component: {fileID: 1623260200}
+  - component: {fileID: 1623260201}
   m_Layer: 5
   m_Name: FadePanel
   m_TagString: Untagged
@@ -844,7 +844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -869,18 +869,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1623260195}
   m_CullTransparentMesh: 1
---- !u!225 &1623260200
-CanvasGroup:
+--- !u!114 &1623260201
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1623260195}
   m_Enabled: 1
-  m_Alpha: 0
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68f635edfbe5f714abeb61070532ceb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeTime: 3
 --- !u!1 &1648085420
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,7 +894,6 @@ GameObject:
   - component: {fileID: 1648085423}
   - component: {fileID: 1648085422}
   - component: {fileID: 1648085421}
-  - component: {fileID: 1648085425}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -986,19 +986,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1648085425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1648085420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68f635edfbe5f714abeb61070532ceb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeTime: 3
 --- !u!1 &1742320332
 GameObject:
   m_ObjectHideFlags: 0
@@ -1070,7 +1057,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1764906411}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1078,7 +1065,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 745}
+  m_AnchoredPosition: {x: 0, y: 1203}
   m_SizeDelta: {x: 825.4, y: 355.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1764906413
@@ -1241,8 +1228,9 @@ GameObject:
   - component: {fileID: 1861175563}
   - component: {fileID: 1861175562}
   - component: {fileID: 1861175565}
+  - component: {fileID: 1861175566}
   m_Layer: 5
-  m_Name: Button
+  m_Name: StartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1256,7 +1244,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1861175560}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 50}
   m_LocalScale: {x: 2.53, y: 2.53, z: 2.53}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1265,7 +1253,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -240.5}
+  m_AnchoredPosition: {x: 0, y: 709}
   m_SizeDelta: {x: 160, y: 38.48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1861175562
@@ -1312,9 +1300,45 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1648085425}
+      - m_Target: {fileID: 1623260201}
         m_TargetAssemblyTypeName: DotweenFade, Assembly-CSharp
         m_MethodName: FadeOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1742320333}
+        m_TargetAssemblyTypeName: SceneSystem, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1861175565}
+        m_TargetAssemblyTypeName: DotoweenMove, Assembly-CSharp
+        m_MethodName: FadeOutButtun
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1764906415}
+        m_TargetAssemblyTypeName: DotoweenMove, Assembly-CSharp
+        m_MethodName: TextFadeOut
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1337,7 +1361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9716981, g: 0.9487807, b: 0.9487807, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1375,6 +1399,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vect: {x: 0, y: -240, z: 0}
+--- !u!225 &1861175566
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861175560}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1950180920 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2858604049732259639, guid: 59513c2364f18694fab71dd310d87076, type: 3}
