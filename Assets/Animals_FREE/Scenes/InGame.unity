@@ -4383,11 +4383,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1250439354381634685, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: m_LocalPosition.x
-<<<<<<< HEAD
-      value: 302.7226
-=======
       value: 300
->>>>>>> git/testHome
       objectReference: {fileID: 0}
     - target: {fileID: 1250439354381634685, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4395,23 +4391,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1250439354381634685, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: m_LocalPosition.z
-<<<<<<< HEAD
-      value: -21.86177
-=======
       value: -20
->>>>>>> git/testHome
       objectReference: {fileID: 0}
     - target: {fileID: 1250439354381634685, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.80592716
+      value: -0.49666333
       objectReference: {fileID: 0}
     - target: {fileID: 1250439354381634685, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1250439354381634685, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.5920148
+      value: 0.8679433
       objectReference: {fileID: 0}
     - target: {fileID: 1250439354381634685, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: m_LocalRotation.z
@@ -4423,7 +4415,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1250439354381634685, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 287.4
+      value: 239.55899
       objectReference: {fileID: 0}
     - target: {fileID: 1250439354381634685, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -4826,11 +4818,6 @@ SceneRoots:
   - {fileID: 381614866}
   - {fileID: 9024783141792072736}
   - {fileID: 965624685}
-<<<<<<< HEAD
-  - {fileID: 6793685745960834824}
-  - {fileID: 55082047}
-=======
->>>>>>> git/testHome
   - {fileID: 1021158858}
   - {fileID: 603444363}
   - {fileID: 894423316}
