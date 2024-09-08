@@ -33,6 +33,7 @@ public class PlayerMove : MonoBehaviour
     RaycastHit hit;
     public int hitCount;
     public string collisionObj = "none";
+    SceneSystem sceneSystem;
     void Start()
     {
         m_anim = GetComponent<Animator>();
@@ -41,6 +42,7 @@ public class PlayerMove : MonoBehaviour
         horseState = HorseState.Idol;
         _isPlaying = true;
         GroundLayers = LayerMask.GetMask("Ground");
+        sceneSystem =GameObject.Find("System").GetComponent<SceneSystem>();
 
     }
 
@@ -233,13 +235,12 @@ public class PlayerMove : MonoBehaviour
         {
             isGameover = true;
 
+            sceneSystem.FadeOut();
         }
         hitCount++;
 
        collisionObj = collision.gameObject.name.ToString() + hitCount.ToString();
 
-
-    
     }
     public enum HorseState
     {

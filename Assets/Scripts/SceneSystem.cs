@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class SceneSystem : MonoBehaviour
 {
     Image  fadePanel;
+    Animator fadeAnimator;
     static public SceneSystem instance;
     void Awake()
     {
@@ -24,17 +25,23 @@ public class SceneSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+    }
+
+    public void FadeOut()
+    {
         fadePanel = GameObject.Find("FadePanel").GetComponent<Image>();
+        fadeAnimator = GameObject.Find("FadePanel").GetComponent<Animator>();
+        fadePanel.enabled = true;
+        fadeAnimator.enabled = true;
     }
 
     // Update is called once per frame
     public void LoadScene()
     {
-        StartCoroutine(nameof(FadeOut));
+        StartCoroutine(nameof(ForFadeTime));
     }
-    IEnumerator FadeOut()
+    IEnumerator ForFadeTime()
     {
-        fadePanel.enabled = true;
         yield return new WaitForSeconds(3F);
         SceneManager.LoadScene("InGame");
     }

@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 95990913304569468}
   - component: {fileID: 64631222584538142}
   m_Layer: 0
-  m_Name: Kangaroo_1
+  m_Name: Demo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
