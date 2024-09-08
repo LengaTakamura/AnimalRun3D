@@ -38,11 +38,11 @@ public class SceneSystem : MonoBehaviour
     // Update is called once per frame
     public void LoadScene()
     {
-        StartCoroutine(nameof(ForFadeTime));
+        StartCoroutine(ForFadeTime(3f));
     }
-    IEnumerator ForFadeTime()
+    IEnumerator ForFadeTime(float second)
     {
-        yield return new WaitForSeconds(3F);
+        yield return new WaitForSeconds(second);
         SceneManager.LoadScene("InGame");
     }
 
