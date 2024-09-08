@@ -31,6 +31,8 @@ public class PlayerMove : MonoBehaviour
     public bool isGameover;
     public float rotationSpeed = 5.0f;
     RaycastHit hit;
+    public int hitCount;
+    public string collisionObj = "none";
     void Start()
     {
         m_anim = GetComponent<Animator>();
@@ -60,10 +62,7 @@ public class PlayerMove : MonoBehaviour
 
     }
     private void FixedUpdate()
-    {
-
-       
-        Horizontal();
+    { 
         if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.Space))
         {
             _acceleration = 0.1f;
@@ -235,6 +234,11 @@ public class PlayerMove : MonoBehaviour
             isGameover = true;
 
         }
+        hitCount++;
+
+       collisionObj = collision.gameObject.name.ToString() + hitCount.ToString();
+
+
     
     }
     public enum HorseState
@@ -242,24 +246,6 @@ public class PlayerMove : MonoBehaviour
         Running, Idol, Walking, Back, Jumping,
     }
 
-    void Horizontal()
-    {
-        float rotatex = transform.eulerAngles.x;
-        float rotatez = transform.eulerAngles.z;
-       // Debug.Log(rotatez);
-
-        if (_isGround && rotatex < 334)
-        {
-            if (rotatex > 0)
-            {
-                //transform.Rotate(Vector3.Scale(Vector3.right, hit.normal), Space.Self);
-                //transform.Rotate(Vector3.right);
-            }
-
-        }
-
-
-
-    }
+   
 
 }
