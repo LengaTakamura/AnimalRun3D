@@ -34,6 +34,7 @@ public class PlayerMove : MonoBehaviour
     public int hitCount;
     public string collisionObj = "none";
     SceneSystem sceneSystem;
+   
     void Start()
     {
         m_anim = GetComponent<Animator>();
@@ -43,6 +44,7 @@ public class PlayerMove : MonoBehaviour
         _isPlaying = true;
         GroundLayers = LayerMask.GetMask("Ground");
         sceneSystem =GameObject.Find("System").GetComponent<SceneSystem>();
+       
 
     }
 
@@ -50,8 +52,8 @@ public class PlayerMove : MonoBehaviour
     {
         GroundedCheck();
         objforward = transform.forward;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
         Idol();
         Moving();
         Rotating();
@@ -104,7 +106,7 @@ public class PlayerMove : MonoBehaviour
     }
     void Moving()
     {
-        if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.Space) )
         {
 
 
