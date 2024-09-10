@@ -31,4 +31,7 @@ public class ScoreManager : MonoBehaviour
         score += Time.deltaTime;
         scoreText.text = score.ToString("F2").PadLeft(6,'0');
     }
+
+
+    
 }

@@ -8,6 +8,7 @@ TagManager:
   - Horse
   - Water
   - Tree
+  - kangaroo
   layers:
   - Default
   - TransparentFX

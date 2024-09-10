@@ -49,7 +49,7 @@ public class KangarooMove : MonoBehaviour
     void JumpUp()
     {
 
-        Debug.Log(rb.velocity);
+       
 
         if (Input.GetKeyDown(KeyCode.Space) && _isGround)
         {
