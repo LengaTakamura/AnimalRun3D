@@ -11,14 +11,13 @@ public class Test : MonoBehaviour
     Text text;
     void Start()
     {
-        PlayerMove = obj.GetComponent<PlayerMove>();
-        text = GetComponent<Text>();    
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        text.text = PlayerMove.collisionObj  ;
+        
         
     }
 }

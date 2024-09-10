@@ -32,6 +32,7 @@ public class KangarooMove : MonoBehaviour
         JumpUp();
         Rotating();
         GroundedCheck();
+        BackJump(); 
     }
     private void FixedUpdate()
     {
@@ -47,6 +48,8 @@ public class KangarooMove : MonoBehaviour
 
     void JumpUp()
     {
+
+        Debug.Log(rb.velocity);
 
         if (Input.GetKeyDown(KeyCode.Space) && _isGround)
         {
@@ -104,17 +107,14 @@ public class KangarooMove : MonoBehaviour
 
         _isGround = sphereHit || rayHit;
 
-        if (_isGround && rb.velocity.y < 0)
+       
+    }
+
+    void BackJump()
+    {
+        if (Input.GetKeyDown(KeyCode.Less))
         {
-
-            // Y軸の速度をリセットして、キャラクターが地面に吸着するようにする
-            rb.velocity = new Vector3(rb.velocity.x, -3f, rb.velocity.z);
-        }
-
-
-        if (!_isGround)
-        {
-            rb.velocity += Vector3.up * gravity * Time.deltaTime;
+            rb.velocity = new Vector3(forward.x * intertia * -0.1f, jumpPower * 0.1f, forward.z * intertia * -0.1f);
         }
     }
 }
