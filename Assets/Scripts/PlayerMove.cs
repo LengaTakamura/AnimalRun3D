@@ -34,6 +34,7 @@ public class PlayerMove : MonoBehaviour
     SceneSystem sceneSystem;
     [SerializeField] StopManager stopManager;
     [SerializeField]CameraSwitch cameraSwitch;
+    ScoreManager scoreManager;
     void Start()
     {
         m_anim = GetComponent<Animator>();
@@ -42,6 +43,7 @@ public class PlayerMove : MonoBehaviour
         horseState = HorseState.Idol;
         _isPlaying = true;
         GroundLayers = LayerMask.GetMask("Ground");
+        scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
         try
         {
             sceneSystem = GameObject.Find("System").GetComponent<SceneSystem>();
@@ -252,11 +254,11 @@ public class PlayerMove : MonoBehaviour
     {
         if (collision.gameObject.tag == "Water")
         {
-
-
             isGameover = true;
 
             sceneSystem.FadeOut();
+
+            scoreManager.GameOver();
 
         }
         

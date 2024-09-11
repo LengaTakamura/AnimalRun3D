@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ResetPlayer : MonoBehaviour
 {
+    [SerializeField] Camera mainCam;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.X))
@@ -16,5 +17,6 @@ public class ResetPlayer : MonoBehaviour
     public void ResetPlayerRotating()
     {
        transform.rotation = Quaternion.identity;
+        mainCam.transform.rotation = Quaternion.identity;
     }
 }

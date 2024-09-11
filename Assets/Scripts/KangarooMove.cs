@@ -25,6 +25,7 @@ public class KangarooMove : MonoBehaviour
     public bool _isClear;
     public bool isGameOver;
     SceneSystem sceneSystem;
+    ScoreManager scoreManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +37,7 @@ public class KangarooMove : MonoBehaviour
             sceneSystem = GameObject.Find("System").GetComponent<SceneSystem>();
         }
         catch { }
+        scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
     }
 
     // Update is called once per frame
@@ -121,30 +123,30 @@ public class KangarooMove : MonoBehaviour
         //{
 
         //    if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
-        //    {       
-        //           subCam.transform.Rotate(Vector3.left, turnPower);
+        //    {
+        //        subCam.transform.Rotate(Vector3.left, turnPower);
         //    }
 
         //    if (!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
         //    {
-        //        subCam.transform.Rotate(Vector3.left, turnPower * -1);                
+        //        subCam.transform.Rotate(Vector3.left, turnPower * -1);
         //    }
         //}
-        //else if(angle <= 100 )
+        //else if (angle <= 100)
         //{
-        //    if (Input.GetKey(KeyCode.W) )
+        //    if (Input.GetKey(KeyCode.W))
         //    {
-        //        subCam.transform.Rotate(Vector3.left, turnPower );
+        //        subCam.transform.Rotate(Vector3.left, turnPower);
         //    }
         //}
         //else if (angle >= 250)
         //{
         //    if (Input.GetKey(KeyCode.S))
         //    {
-        //       subCam.transform.Rotate(Vector3.left, turnPower -1);
+        //        subCam.transform.Rotate(Vector3.left, turnPower - 1);
 
         //    }
-        //}   
+        //}
 
 
 
@@ -166,6 +168,7 @@ public class KangarooMove : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
+          
             transform.rotation = Quaternion.identity;
             rb.velocity = new Vector3(forward.x * intertia * -0.1f, jumpPower * 0.1f, forward.z * intertia * -0.1f);
         }
@@ -176,6 +179,7 @@ public class KangarooMove : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             _isClear = true;
+            scoreManager.ScoreCount();
         }
 
         if (collision.gameObject.tag == "Water")
@@ -183,6 +187,8 @@ public class KangarooMove : MonoBehaviour
             isGameOver = true;
 
             sceneSystem.FadeOut();
+
+
         }
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -38,9 +39,11 @@ public class ScoreManager : MonoBehaviour
 
     }
 
-    void ScoreCount()
+    public void ScoreCount()
     {
+        scoreText.enabled = false;
          finalScore = score;
+        StartCoroutine(nameof(ScoreActrive));
     }
 
     IEnumerator ScoreActrive()
@@ -48,5 +51,14 @@ public class ScoreManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         finalScoreText.text = "Score"+ ":" + finalScore.ToString("F2").PadLeft(6, '0');
     }
+
+    public void GameOver()
+    {
+        scoreText.enabled = false;
+        finalScoreText.DOFade(1f, 10f);
+        finalScoreText.text = "GameOver";
+    }
+
+
     
 }
