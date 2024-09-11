@@ -21,18 +21,17 @@ public class CameraController : MonoBehaviour
         //------カメラの移動------
 
         //プレイヤーの現在地の取得
-        currentPos = player.transform.position;
+        //currentPos = player.transform.position;
 
-        diff = currentPos - pastPos;
+        //diff = currentPos - pastPos;
 
-        transform.position = Vector3.Lerp(transform.position, transform.position + diff, 1.0f);//カメラをプレイヤーの移動差分だけうごかすよ
+        //transform.position = Vector3.Lerp(transform.position, transform.position + diff, 1.0f);//カメラをプレイヤーの移動差分だけうごかすよ
 
-        pastPos = currentPos;
+        //pastPos = currentPos;
 
 
 
-        if (player.gameObject.name != ("Kangaroo_1"))
-        {
+        
             //------カメラの回転------
 
             //マウスの移動量を取得
@@ -46,12 +45,12 @@ public class CameraController : MonoBehaviour
                 transform.RotateAround(player.transform.position, Vector3.up, mx);
             }
 
-            // Y方向に一定量移動していれば縦回転
-            if (Mathf.Abs(my) > 0.01f)
-            {
-                // 回転軸はカメラ自身のX軸
-                transform.RotateAround(player.transform.position, transform.right, -my);
-            }
+        // Y方向に一定量移動していれば縦回転
+        if (Mathf.Abs(my) > 0.01f)
+        {
+            // 回転軸はカメラ自身のX軸
+            transform.RotateAround(player.transform.position, transform.right, -my);
+        }
         }
     }
-}
+

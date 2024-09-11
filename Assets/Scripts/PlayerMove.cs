@@ -252,13 +252,14 @@ public class PlayerMove : MonoBehaviour
     {
         if (collision.gameObject.tag == "Water")
         {
+
+
             isGameover = true;
 
             sceneSystem.FadeOut();
-        }
-        hitCount++;
 
-        collisionObj = collision.gameObject.name.ToString() + hitCount.ToString();
+        }
+        
 
     }
     public enum HorseState

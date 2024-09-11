@@ -20,14 +20,22 @@ public class KangarooMove : MonoBehaviour
     RaycastHit hit;
     Animator anim;
     CameraSwitch cameraSwitch;
-    [SerializeField]Camera subCam;
+    [SerializeField] Camera subCam;
     float angle;
+    public bool _isClear;
+    public bool isGameOver;
+    SceneSystem sceneSystem;
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();  
+        rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         cameraSwitch = GameObject.Find("CameraSystem").GetComponent<CameraSwitch>();
+        try
+        {
+            sceneSystem = GameObject.Find("System").GetComponent<SceneSystem>();
+        }
+        catch { }
     }
 
     // Update is called once per frame
@@ -36,9 +44,9 @@ public class KangarooMove : MonoBehaviour
         if (!cameraSwitch.mainActive)
         {
 
-             angle = subCam.transform.eulerAngles.x;
-            Debug.Log(angle);
-         
+            angle = subCam.transform.eulerAngles.x;
+
+
             Rotating();
 
             JumpUp();
@@ -61,25 +69,25 @@ public class KangarooMove : MonoBehaviour
     void JumpUp()
     {
 
-       
+
 
         if (Input.GetKeyDown(KeyCode.Space) && _isGround)
         {
             falseCheck = false;
             canJump = true;
             StartCoroutine(nameof(Jumping));
-      
+
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && !falseCheck && _isGround)
         {
             canJump = false;
-        
+
         }
 
         if (Input.GetKeyUp(KeyCode.Space) && canJump && _isGround)
         {
-      
+
             rb.velocity = new Vector3(forward.x * intertia, jumpPower, forward.z * intertia);
             canJump = false;
         }
@@ -93,7 +101,7 @@ public class KangarooMove : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             falseCheck = true;
-    
+
         }
     }
 
@@ -101,7 +109,7 @@ public class KangarooMove : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
         {
-            this.transform.Rotate(Vector3.up ,turnPower);
+            this.transform.Rotate(Vector3.up, turnPower);
         }
 
         if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
@@ -109,42 +117,36 @@ public class KangarooMove : MonoBehaviour
             this.transform.Rotate(Vector3.up, turnPower * -1);
         }
 
-        if (angle <= 50 || angle >= 310)
-        {
+        //if (angle <= 50 || angle >= 310)
+        //{
 
-            if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
-            {
-               
-                   subCam.transform.Rotate(Vector3.left, turnPower);
+        //    if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+        //    {       
+        //           subCam.transform.Rotate(Vector3.left, turnPower);
+        //    }
 
-                
+        //    if (!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
+        //    {
+        //        subCam.transform.Rotate(Vector3.left, turnPower * -1);                
+        //    }
+        //}
+        //else if(angle <= 100 )
+        //{
+        //    if (Input.GetKey(KeyCode.W) )
+        //    {
+        //        subCam.transform.Rotate(Vector3.left, turnPower );
+        //    }
+        //}
+        //else if (angle >= 250)
+        //{
+        //    if (Input.GetKey(KeyCode.S))
+        //    {
+        //       subCam.transform.Rotate(Vector3.left, turnPower -1);
 
-            }
+        //    }
+        //}   
 
-            if (!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
-            {
-               
-                    subCam.transform.Rotate(Vector3.left, turnPower * -1);
-                
-            }
-        }
-        else if(angle <= 60 )
-        {
-            if (Input.GetKey(KeyCode.S) )
-            {
-                subCam.transform.Rotate(Vector3.left, turnPower );
-            }
-        }
-        else if (angle >= 300)
-        {
-            if (Input.GetKey(KeyCode.W))
-            {
-               subCam.transform.Rotate(Vector3.left, turnPower -1);
 
-            }
-        }   
-        
-       
 
 
     }
@@ -158,14 +160,33 @@ public class KangarooMove : MonoBehaviour
 
         _isGround = sphereHit || rayHit;
 
-       
     }
 
     void BackJump()
     {
-        if (Input.GetKeyDown(KeyCode.Less))
+        if (Input.GetKeyDown(KeyCode.X))
         {
+            transform.rotation = Quaternion.identity;
             rb.velocity = new Vector3(forward.x * intertia * -0.1f, jumpPower * 0.1f, forward.z * intertia * -0.1f);
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            _isClear = true;
+        }
+
+        if (collision.gameObject.tag == "Water")
+        {
+            isGameOver = true;
+
+            sceneSystem.FadeOut();
+        }
+
+
+
+    }
 }
+

@@ -27,7 +27,7 @@ public class CaraGenerator : MonoBehaviour
 
     void RandomSpawn()
     {
-        int index = (int)Random.Range(0f, Spawns.Count + 1);
+        int index = (int)Random.Range(0, Spawns.Count + 1);
 
         int or = (int)Random.Range(0, 2);
 
