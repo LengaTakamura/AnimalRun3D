@@ -14,7 +14,7 @@ public class CaraGenerator : MonoBehaviour
 
         Spawns.Add((new Vector3(390, 20, -120), new Vector3(160, 20, 110)));
         Spawns.Add((new Vector3(160, 20, -120), new Vector3(390, 20, 110)));
-        Spawns.Add((new Vector3(170, 30, 15), new Vector3(330, 20, 13)));
+        Spawns.Add((new Vector3(170, 30, 15), new Vector3(330, 25, 15)));
         Spawns.Add((new Vector3(330, 20, -110), new Vector3(230, 20, 75)));
         Spawns.Add((new Vector3(275, 20, -3), new Vector3(355, 20, 85)));
         Spawns.Add((new Vector3(275, 20, -3), new Vector3(365, 20, -96)));

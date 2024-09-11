@@ -19,20 +19,32 @@ public class KangarooMove : MonoBehaviour
     public float groundDistance = 0.4f; // ê⁄ínîªíËÇÃîºåa
     RaycastHit hit;
     Animator anim;
+    CameraSwitch cameraSwitch;
+    [SerializeField]Camera subCam;
+    float angle;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();  
         anim = GetComponent<Animator>();
+        cameraSwitch = GameObject.Find("CameraSystem").GetComponent<CameraSwitch>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        JumpUp();
-        Rotating();
+        if (!cameraSwitch.mainActive)
+        {
+
+             angle = subCam.transform.eulerAngles.x;
+            Debug.Log(angle);
+         
+            Rotating();
+
+            JumpUp();
+            BackJump();
+        }
         GroundedCheck();
-        BackJump(); 
     }
     private void FixedUpdate()
     {
@@ -40,9 +52,9 @@ public class KangarooMove : MonoBehaviour
 
         if (anim)
         {
-            anim.SetBool("s", canJump);
+            anim.SetBool("s", canJump && !cameraSwitch.mainActive);
             anim.SetBool("g", _isGround);
-            anim.SetBool("Space", Input.GetKey(KeyCode.Space));
+            anim.SetBool("Space", Input.GetKey(KeyCode.Space) && !cameraSwitch.mainActive);
         }
     }
 
@@ -87,15 +99,54 @@ public class KangarooMove : MonoBehaviour
 
     void Rotating()
     {
-        if (Input.GetKey(KeyCode.L) && !Input.GetKey(KeyCode.K))
+        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
         {
             this.transform.Rotate(Vector3.up ,turnPower);
         }
 
-        if (Input.GetKey(KeyCode.K) && !Input.GetKey(KeyCode.L))
+        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
             this.transform.Rotate(Vector3.up, turnPower * -1);
         }
+
+        if (angle <= 50 || angle >= 310)
+        {
+
+            if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+            {
+               
+                   subCam.transform.Rotate(Vector3.left, turnPower);
+
+                
+
+            }
+
+            if (!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
+            {
+               
+                    subCam.transform.Rotate(Vector3.left, turnPower * -1);
+                
+            }
+        }
+        else if(angle <= 60 )
+        {
+            if (Input.GetKey(KeyCode.S) )
+            {
+                subCam.transform.Rotate(Vector3.left, turnPower );
+            }
+        }
+        else if (angle >= 300)
+        {
+            if (Input.GetKey(KeyCode.W))
+            {
+               subCam.transform.Rotate(Vector3.left, turnPower -1);
+
+            }
+        }   
+        
+       
+
+
     }
 
     public void GroundedCheck()

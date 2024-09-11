@@ -24,8 +24,6 @@ public class StopManager : MonoBehaviour
         
         isStop = true;
        
-
-        
     }
     private void OnTriggerExit(Collider other)
     {

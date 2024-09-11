@@ -33,6 +33,7 @@ public class PlayerMove : MonoBehaviour
     public string collisionObj = "none";
     SceneSystem sceneSystem;
     [SerializeField] StopManager stopManager;
+    [SerializeField]CameraSwitch cameraSwitch;
     void Start()
     {
         m_anim = GetComponent<Animator>();
@@ -41,8 +42,12 @@ public class PlayerMove : MonoBehaviour
         horseState = HorseState.Idol;
         _isPlaying = true;
         GroundLayers = LayerMask.GetMask("Ground");
-        sceneSystem = GameObject.Find("System").GetComponent<SceneSystem>();
-
+        try
+        {
+            sceneSystem = GameObject.Find("System").GetComponent<SceneSystem>();
+        }
+        catch { }
+        cameraSwitch = GameObject.Find("CameraSystem").GetComponent<CameraSwitch>();
 
     }
 
@@ -54,14 +59,21 @@ public class PlayerMove : MonoBehaviour
         //Cursor.visible = false;
         Idol();
 
-        Moving();
-        if (stopManager.isStop == false)
+        if (cameraSwitch.mainActive)
         {
+            Moving();
 
-            Rotating();
+            if (stopManager.isStop == false)
+            {
+                Rotating();
 
-            Jumpimg();
-
+                Jumpimg();
+            }
+        }
+        else
+        {
+            horseState = HorseState.Idol;
+            
         }
 
         if (!_isGround)
@@ -111,7 +123,7 @@ public class PlayerMove : MonoBehaviour
     }
     void Moving()
     {
-        if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.LeftShift) && !stopManager.isStop)
+        if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.Space) )
         {
 
 
@@ -192,7 +204,7 @@ public class PlayerMove : MonoBehaviour
     }
     void Jumpimg()
     {
-        if (_isGround && Input.GetKeyDown(KeyCode.LeftShift))
+        if (_isGround && Input.GetKeyDown(KeyCode.Space))
         {
 
             rb.AddForce(new Vector3(objforward.x * intertia, 1 * jumpSpeed, objforward.z * intertia), ForceMode.Impulse);
