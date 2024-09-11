@@ -7,31 +7,16 @@ public class SliderManager : MonoBehaviour
 {
     CameraSwitch cameraSwitch;
    
-    float defaultValue;
-    float clonevalue;
+   
     // Start is called before the first frame update
     void Start()
     {
         cameraSwitch = GameObject.Find("CameraSystem").GetComponent<CameraSwitch>();
+        this.gameObject.SetActive(true);
     }
 
 
-    //private void Update()
-    //{
-    //    if (!cameraSwitch.mainActive)
-    //    {
-    //        this.gameObject.SetActive(false);
-    //    }
-    //    else
-    //    {
-    //        this.gameObject.SetActive(true);
-    //    }
-
-
-
-    //}
-
-    // Update is called once per frame
+   
+  
 }
 
- 

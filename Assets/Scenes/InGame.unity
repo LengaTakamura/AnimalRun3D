@@ -458,7 +458,7 @@ MonoBehaviour:
   intertia: 5.57
   canJump: 0
   falseCheck: 0
-  turnPower: 0.5
+  turnPower: 2
   GroundedOffset: -0.14
   GroundedRadius: 0.2
   GroundLayers:
@@ -843,7 +843,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 728435660}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &728435663
 Camera:
   m_ObjectHideFlags: 0
@@ -876,7 +876,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 15
+  far clip plane: 100
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1400,8 +1400,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52
-  m_fontSizeBase: 52
+  m_fontSize: 28.46
+  m_fontSizeBase: 28.46
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1876,7 +1876,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1969450368}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e557f8549ae2b9541ae377eb6c80ddf2, type: 3}
   m_Name: 
@@ -1889,7 +1889,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1969450368}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!20 &1969450371
 Camera:
   m_ObjectHideFlags: 0
@@ -1922,7 +1922,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 100
+  far clip plane: 500
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -2021,6 +2021,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 52251318779949315, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
+      propertyPath: turnPower
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 52251318779949315, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: staminaBar
       value: 

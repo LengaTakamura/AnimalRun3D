@@ -99,7 +99,7 @@ public class KangarooMove : MonoBehaviour
 
     IEnumerator Jumping()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.1f);
         if (Input.GetKey(KeyCode.Space))
         {
             falseCheck = true;
@@ -109,15 +109,38 @@ public class KangarooMove : MonoBehaviour
 
     void Rotating()
     {
-        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
+
+
+
+        float mx = Input.GetAxis("Mouse X");
+        
+
+        // X•ûŒü‚Éˆê’è—ÊˆÚ“®‚µ‚Ä‚¢‚ê‚Î‰¡‰ñ“]
+        if (mx > 0.01f)
         {
+
             this.transform.Rotate(Vector3.up, turnPower);
         }
-
-        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        else if (mx < -0.01f)
         {
             this.transform.Rotate(Vector3.up, turnPower * -1);
+
         }
+
+       
+    }
+       
+      
+
+        //if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
+        //{
+        //    this.transform.Rotate(Vector3.up, turnPower);
+        //}
+
+        //if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        //{
+        //    this.transform.Rotate(Vector3.up, turnPower * -1);
+        //}
 
         //if (angle <= 50 || angle >= 310)
         //{
@@ -151,7 +174,7 @@ public class KangarooMove : MonoBehaviour
 
 
 
-    }
+    
 
     public void GroundedCheck()
     {

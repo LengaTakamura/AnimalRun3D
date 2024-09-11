@@ -43,6 +43,7 @@ public class PlayerMove : MonoBehaviour
     bool isStaminaCounting;
     bool staminaAddCounting = true ;
     float damage = 20f;
+    public float turnPower;
     void Start()
     {
         m_anim = GetComponent<Animator>();
@@ -67,17 +68,17 @@ public class PlayerMove : MonoBehaviour
     {
         GroundedCheck();
         objforward = transform.forward;
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         Idol();
 
         defaSta = staminaBar.value;
 
+        SliderOnOff();
+
+         staminaBar.value = defaSta;  
         if (cameraSwitch.mainActive )
         {
-
-               
-               staminaBar.value = defaSta;  
                Moving();
             
 
@@ -102,30 +103,6 @@ public class PlayerMove : MonoBehaviour
             horseState = HorseState.Jumping;
         }
 
-    }
-    private void FixedUpdate()
-    {
-        if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.LeftShift))
-        {
-            _acceleration = 0.1f;
-            SpeedUp();
-
-        }
-
-        if (m_anim)
-        {
-            m_anim.SetFloat("SpeedX", Mathf.Abs(moveDirection.x));
-            m_anim.SetFloat("SpeedY", moveDirection.y);
-            m_anim.SetFloat("SpeedZ", Mathf.Abs(moveDirection.z));
-            m_anim.SetFloat("Moving", forward);
-            m_anim.SetBool("Running", _running);
-            m_anim.SetBool("IsGround", _isGround);
-            m_anim.SetBool("Running2", horseState == HorseState.Running);
-            m_anim.SetBool("Walking", horseState == HorseState.Walking);
-            m_anim.SetBool("Idol", horseState == HorseState.Idol);
-            m_anim.SetBool("Back", horseState == HorseState.Back);
-            m_anim.SetBool("Jumping", horseState == HorseState.Jumping);
-        }
 
         if ((horseState == HorseState.Walking || horseState == HorseState.Running) && !isStaminaCounting)
         {
@@ -146,6 +123,30 @@ public class PlayerMove : MonoBehaviour
         }
 
 
+
+    }
+    private void FixedUpdate()
+    {
+        
+
+        if (m_anim)
+        {
+            m_anim.SetFloat("SpeedX", Mathf.Abs(moveDirection.x));
+            m_anim.SetFloat("SpeedY", moveDirection.y);
+            m_anim.SetFloat("SpeedZ", Mathf.Abs(moveDirection.z));
+            m_anim.SetFloat("Moving", forward);
+            m_anim.SetBool("Running", _running);
+            m_anim.SetBool("IsGround", _isGround);
+            m_anim.SetBool("Running2", horseState == HorseState.Running);
+            m_anim.SetBool("Walking", horseState == HorseState.Walking);
+            m_anim.SetBool("Idol", horseState == HorseState.Idol);
+            m_anim.SetBool("Back", horseState == HorseState.Back);
+            m_anim.SetBool("Jumping", horseState == HorseState.Jumping);
+        }
+
+        
+
+
     }
 
       void Idol()
@@ -157,20 +158,17 @@ public class PlayerMove : MonoBehaviour
             horseState = HorseState.Idol;
         }
 
-        if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S))
-        {
-            horseState = HorseState.Idol;
-        }
+        
     }
     void Moving()
     {
 
         
 
-        if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.Space) && staminaBar.value >= 150 )
+        if (Input.GetMouseButton(0) && _isGround && !Input.GetKey(KeyCode.Space) && staminaBar.value >= 150 )
         {
 
-            damage = 20f;
+            damage = 100f;
             horseState = HorseState.Walking;
             _running = false;
             forward = 1f;
@@ -178,38 +176,11 @@ public class PlayerMove : MonoBehaviour
             _vect = this.transform.rotation * new Vector3(0, 0, forward);
             moveDirection = new Vector3(_vect.x, 0, _vect.z);
             rb.velocity = moveDirection * speed * 0.1f + (Vector3.up * rb.velocity.y);
-          
-           
-
-            if (speed >= 40f)
-            {
-                _running = true;
-                horseState = HorseState.Running;
-                damage = 100f;
-
-            }
-            else
-            {
-                horseState = HorseState.Walking;
-
-            }
-
-            if (speed >= 60f)
-            {
-                speed = 60f;
-                _acceleration = 0f;
-            }
 
         }
-        else if (speed >= 55f && Input.GetKeyUp(KeyCode.W))
-        {
-            horseState = HorseState.Idol;
-            _running = false;
-            ResetSpeed();
+       
 
-        }
-
-        if (Input.GetKey(KeyCode.S) && _isGround)
+        if (Input.GetMouseButton(1) && _isGround)
         {
             horseState = HorseState.Back;
             ResetSpeed();
@@ -226,29 +197,22 @@ public class PlayerMove : MonoBehaviour
 
     void Rotating()
     {
-        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
-        {
-            //beside = 0.15f;
-            // オブジェクトの回転
-            if (Input.GetKey(KeyCode.S))
-            {
-                beside = 0.05f;
 
-            }
-            this.transform.Rotate(Vector3.up, beside);
-        }
-        //←キーが押されていて→キーが押されていない時
-        else if (!Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A))
-        {
-            // オブジェクトの回転
-            //beside = 0.15f;
-            if (Input.GetKey(KeyCode.S))
-            {
-                beside = 0.05f;
+        float mx = Input.GetAxis("Mouse X");
 
-            }
-            this.transform.Rotate(Vector3.up, -1 * beside);
+
+        // X方向に一定量移動していれば横回転
+        if (mx > 0.01f)
+        {
+
+            this.transform.Rotate(Vector3.up, turnPower);
         }
+        else if (mx < -0.01f)
+        {
+            this.transform.Rotate(Vector3.up, turnPower * -1);
+
+        }
+       
     }
     void Jumpimg()
     {
@@ -264,7 +228,7 @@ public class PlayerMove : MonoBehaviour
 
         }
 
-        if (horseState == HorseState.Jumping && Input.GetKeyDown(KeyCode.S))
+        if (horseState == HorseState.Jumping && Input.GetMouseButtonDown(2))
         {
             intertia = 0;
             horseState = HorseState.Back;
@@ -292,10 +256,7 @@ public class PlayerMove : MonoBehaviour
 
 
     }
-    void SpeedUp()
-    {
-        speed += _acceleration;
-    }
+   
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -320,10 +281,10 @@ public class PlayerMove : MonoBehaviour
 
         while (horseState == HorseState.Walking || horseState == HorseState.Running && staminaBar.value >= 150)
         {
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(3f);
 
             float sta = staminaBar.value;
-            staminaBar.DOValue(sta - damage, 0.5f);
+            staminaBar.DOValue(sta - damage, 1f);
         
         }
         isStaminaCounting = false;
@@ -337,14 +298,24 @@ public class PlayerMove : MonoBehaviour
             yield return new WaitForSeconds(3f);
 
             float staAdd = staminaBar.value;
-            staminaBar.DOValue(staAdd + 50, 0.5F);
+            staminaBar.DOValue(staAdd + 100, 1F);
 
         }
         staminaAddCounting = true;
     }
 
 
-   
+   void SliderOnOff()
+    {
+        if (!cameraSwitch.mainActive)
+        {
+            staminaBar.gameObject.SetActive(false);
+        }
+        else
+        {
+            staminaBar.gameObject.SetActive(true);
+        }
+    }
 
     public enum HorseState
     {
