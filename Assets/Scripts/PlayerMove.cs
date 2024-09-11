@@ -38,10 +38,10 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] StopManager stopManager;
     [SerializeField]CameraSwitch cameraSwitch;
     ScoreManager scoreManager;
-    public float fullStamina = 1000;
     [SerializeField]Slider staminaBar;
-    float stamina;
+    float defaSta;
     bool isStaminaCounting;
+    bool staminaAddCounting = true ;
     float damage = 20f;
     void Start()
     {
@@ -71,9 +71,16 @@ public class PlayerMove : MonoBehaviour
         //Cursor.visible = false;
         Idol();
 
-        if (cameraSwitch.mainActive)
+        defaSta = staminaBar.value;
+
+        if (cameraSwitch.mainActive )
         {
-            Moving();
+
+               
+               staminaBar.value = defaSta;  
+               Moving();
+            
+
 
             if (stopManager.isStop == false)
             {
@@ -84,7 +91,9 @@ public class PlayerMove : MonoBehaviour
         }
         else
         {
+            
             horseState = HorseState.Idol;
+            
             
         }
 
@@ -118,25 +127,28 @@ public class PlayerMove : MonoBehaviour
             m_anim.SetBool("Jumping", horseState == HorseState.Jumping);
         }
 
-    }
-
-    private void LateUpdate()
-    {
         if ((horseState == HorseState.Walking || horseState == HorseState.Running) && !isStaminaCounting)
         {
             StartCoroutine(nameof(StaminaCount));
             isStaminaCounting = true; // コルーチン実行中のフラグをセット
         }
         // horseState が他の状態に変わった場合はフラグをリセット
-        else if (horseState != HorseState.Walking && horseState != HorseState.Running)
+        else if ((horseState != HorseState.Walking && horseState != HorseState.Running && horseState != HorseState.Jumping))
         {
             isStaminaCounting = false;
+
+            if (staminaAddCounting)
+            {
+                StartCoroutine(nameof(StaminaAdd));
+
+                staminaAddCounting = false;
+            }
         }
+
+
     }
 
-
-
-    void Idol()
+      void Idol()
     {
 
         if (rb.velocity.x < 0.1f && rb.velocity.z < 0.1f && _isGround)
@@ -152,7 +164,10 @@ public class PlayerMove : MonoBehaviour
     }
     void Moving()
     {
-        if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.Space) )
+
+        
+
+        if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.Space) && staminaBar.value >= 150 )
         {
 
             damage = 20f;
@@ -303,7 +318,7 @@ public class PlayerMove : MonoBehaviour
     {
         
 
-        while (horseState == HorseState.Walking || horseState == HorseState.Running)
+        while (horseState == HorseState.Walking || horseState == HorseState.Running && staminaBar.value >= 150)
         {
             yield return new WaitForSeconds(1.5f);
 
@@ -315,6 +330,21 @@ public class PlayerMove : MonoBehaviour
     }
 
 
+    IEnumerator StaminaAdd()
+    {
+        while (horseState == HorseState.Idol)
+        {
+            yield return new WaitForSeconds(3f);
+
+            float staAdd = staminaBar.value;
+            staminaBar.DOValue(staAdd + 50, 0.5F);
+
+        }
+        staminaAddCounting = true;
+    }
+
+
+   
 
     public enum HorseState
     {
