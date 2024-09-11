@@ -49,6 +49,8 @@ public class ScoreManager : MonoBehaviour
     IEnumerator ScoreActrive()
     {
         yield return new WaitForSeconds(3);
+        finalScoreText.color = Color.white;
+        finalScoreText.DOFade(1f, 10f);
         finalScoreText.text = "Score"+ ":" + finalScore.ToString("F2").PadLeft(6, '0');
     }
 

@@ -188,7 +188,6 @@ public class KangarooMove : MonoBehaviour
 
             sceneSystem.FadeOut();
 
-
         }
 
 
