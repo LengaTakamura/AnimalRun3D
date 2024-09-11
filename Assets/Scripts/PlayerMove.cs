@@ -1,4 +1,7 @@
+using DG.Tweening;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -35,6 +38,11 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] StopManager stopManager;
     [SerializeField]CameraSwitch cameraSwitch;
     ScoreManager scoreManager;
+    public float fullStamina = 1000;
+    [SerializeField]Slider staminaBar;
+    float stamina;
+    bool isStaminaCounting;
+    float damage = 20f;
     void Start()
     {
         m_anim = GetComponent<Animator>();
@@ -50,6 +58,8 @@ public class PlayerMove : MonoBehaviour
         }
         catch { }
         cameraSwitch = GameObject.Find("CameraSystem").GetComponent<CameraSwitch>();
+
+       
 
     }
 
@@ -109,6 +119,23 @@ public class PlayerMove : MonoBehaviour
         }
 
     }
+
+    private void LateUpdate()
+    {
+        if ((horseState == HorseState.Walking || horseState == HorseState.Running) && !isStaminaCounting)
+        {
+            StartCoroutine(nameof(StaminaCount));
+            isStaminaCounting = true; // コルーチン実行中のフラグをセット
+        }
+        // horseState が他の状態に変わった場合はフラグをリセット
+        else if (horseState != HorseState.Walking && horseState != HorseState.Running)
+        {
+            isStaminaCounting = false;
+        }
+    }
+
+
+
     void Idol()
     {
 
@@ -128,7 +155,7 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKey(KeyCode.W) && _isGround && !Input.GetKey(KeyCode.Space) )
         {
 
-
+            damage = 20f;
             horseState = HorseState.Walking;
             _running = false;
             forward = 1f;
@@ -136,11 +163,15 @@ public class PlayerMove : MonoBehaviour
             _vect = this.transform.rotation * new Vector3(0, 0, forward);
             moveDirection = new Vector3(_vect.x, 0, _vect.z);
             rb.velocity = moveDirection * speed * 0.1f + (Vector3.up * rb.velocity.y);
+          
+           
 
             if (speed >= 40f)
             {
                 _running = true;
                 horseState = HorseState.Running;
+                damage = 100f;
+
             }
             else
             {
@@ -222,6 +253,7 @@ public class PlayerMove : MonoBehaviour
         {
             intertia = 0;
             horseState = HorseState.Back;
+           
         }
     }
     void ResetSpeed()
@@ -264,6 +296,26 @@ public class PlayerMove : MonoBehaviour
         
 
     }
+
+
+   
+    IEnumerator StaminaCount( )
+    {
+        
+
+        while (horseState == HorseState.Walking || horseState == HorseState.Running)
+        {
+            yield return new WaitForSeconds(1.5f);
+
+            float sta = staminaBar.value;
+            staminaBar.DOValue(sta - damage, 0.5f);
+        
+        }
+        isStaminaCounting = false;
+    }
+
+
+
     public enum HorseState
     {
         Running, Idol, Walking, Back, Jumping,
