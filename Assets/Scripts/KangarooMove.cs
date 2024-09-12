@@ -26,11 +26,14 @@ public class KangarooMove : MonoBehaviour
     public bool isGameOver;
     SceneSystem sceneSystem;
     ScoreManager scoreManager;
+    [SerializeField] AudioClip[] audioClips;
+    AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         cameraSwitch = GameObject.Find("CameraSystem").GetComponent<CameraSwitch>();
         try
         {
@@ -47,10 +50,7 @@ public class KangarooMove : MonoBehaviour
         {
 
             angle = subCam.transform.eulerAngles.x;
-
-
             Rotating();
-
             JumpUp();
             BackJump();
         }
@@ -70,14 +70,12 @@ public class KangarooMove : MonoBehaviour
 
     void JumpUp()
     {
-
-
-
         if (Input.GetKeyDown(KeyCode.Space) && _isGround)
         {
             falseCheck = false;
             canJump = true;
             StartCoroutine(nameof(Jumping));
+            audioSource.PlayOneShot(audioClips[0]);
 
         }
 
@@ -92,6 +90,7 @@ public class KangarooMove : MonoBehaviour
 
             rb.velocity = new Vector3(forward.x * intertia, jumpPower, forward.z * intertia);
             canJump = false;
+            audioSource.PlayOneShot(audioClips[1]);
         }
 
 
@@ -99,7 +98,7 @@ public class KangarooMove : MonoBehaviour
 
     IEnumerator Jumping()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.01f);
         if (Input.GetKey(KeyCode.Space))
         {
             falseCheck = true;
@@ -110,18 +109,16 @@ public class KangarooMove : MonoBehaviour
     void Rotating()
     {
 
-
-
-        float mx = Input.GetAxis("Mouse X");
+        float x = Input.GetAxis("Mouse X");
         
 
         // X方向に一定量移動していれば横回転
-        if (mx > 0.01f)
+        if (x > 0.01f)
         {
 
             this.transform.Rotate(Vector3.up, turnPower);
         }
-        else if (mx < -0.01f)
+        else if (x < -0.01f)
         {
             this.transform.Rotate(Vector3.up, turnPower * -1);
 
@@ -130,52 +127,6 @@ public class KangarooMove : MonoBehaviour
        
     }
        
-      
-
-        //if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
-        //{
-        //    this.transform.Rotate(Vector3.up, turnPower);
-        //}
-
-        //if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-        //{
-        //    this.transform.Rotate(Vector3.up, turnPower * -1);
-        //}
-
-        //if (angle <= 50 || angle >= 310)
-        //{
-
-        //    if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
-        //    {
-        //        subCam.transform.Rotate(Vector3.left, turnPower);
-        //    }
-
-        //    if (!Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S))
-        //    {
-        //        subCam.transform.Rotate(Vector3.left, turnPower * -1);
-        //    }
-        //}
-        //else if (angle <= 100)
-        //{
-        //    if (Input.GetKey(KeyCode.W))
-        //    {
-        //        subCam.transform.Rotate(Vector3.left, turnPower);
-        //    }
-        //}
-        //else if (angle >= 250)
-        //{
-        //    if (Input.GetKey(KeyCode.S))
-        //    {
-        //        subCam.transform.Rotate(Vector3.left, turnPower - 1);
-
-        //    }
-        //}
-
-
-
-
-    
-
     public void GroundedCheck()
     {
         // オフセットを計算して球の位置を設定する
@@ -190,8 +141,7 @@ public class KangarooMove : MonoBehaviour
     void BackJump()
     {
         if (Input.GetKeyDown(KeyCode.X))
-        {
-          
+        {        
             transform.rotation = Quaternion.identity;
             rb.velocity = new Vector3(forward.x * intertia * -0.1f, jumpPower * 0.1f, forward.z * intertia * -0.1f);
         }
@@ -212,8 +162,6 @@ public class KangarooMove : MonoBehaviour
             sceneSystem.FadeOut();
 
         }
-
-
 
     }
 }

@@ -6,19 +6,24 @@ public class CameraSwitch : MonoBehaviour
 {
     [SerializeField] Camera main;
     [SerializeField] Camera sub;
+    AudioSource audioSource;
     public bool mainActive = true;
+    [SerializeField] AudioClip switchClip;
     // Start is called before the first frame update
     void Start()
     {
         sub .enabled = false;    
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        audioSource.Play();
         if (Input.GetKeyDown(KeyCode.C))
         {
+            audioSource.PlayOneShot(switchClip);
+
             if (mainActive)
             {
                 main.enabled = false;

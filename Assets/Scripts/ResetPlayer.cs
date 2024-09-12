@@ -5,9 +5,10 @@ using UnityEngine;
 public class ResetPlayer : MonoBehaviour
 {
     [SerializeField] Camera mainCam;
+    [SerializeField] CameraSwitch cameraSwitch;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.X) && cameraSwitch.mainActive)
         {
             ResetPlayerRotating();
         }

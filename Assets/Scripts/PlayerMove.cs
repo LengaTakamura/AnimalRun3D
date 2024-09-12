@@ -41,7 +41,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]Slider staminaBar;
     float defaSta;
     bool isStaminaCounting;
-    bool staminaAddCounting = true ;
+    public bool staminaAddCounting = true ;
     float damage = 20f;
     public float turnPower;
     void Start()
@@ -117,7 +117,7 @@ public class PlayerMove : MonoBehaviour
             if (staminaAddCounting)
             {
                 StartCoroutine(nameof(StaminaAdd));
-
+                Debug.Log("heal");
                 staminaAddCounting = false;
             }
         }
@@ -248,10 +248,10 @@ public class PlayerMove : MonoBehaviour
         // オフセットを計算して球の位置を設定する
         Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
         bool sphereHit = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
-        bool rayHit = Physics.Raycast(transform.position, Vector3.down, out hit, groundDistance + 0.1f, GroundLayers);
+        bool rayHit = Physics.Raycast(transform.position, Vector3.down, out hit, groundDistance, GroundLayers);
 
 
-        _isGround = sphereHit || rayHit;
+        _isGround =sphereHit  ;
 
 
 
@@ -296,7 +296,7 @@ public class PlayerMove : MonoBehaviour
         while (horseState == HorseState.Idol)
         {
             yield return new WaitForSeconds(3f);
-
+           
             float staAdd = staminaBar.value;
             staminaBar.DOValue(staAdd + 100, 1F);
 
