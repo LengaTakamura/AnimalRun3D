@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
-
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class KangarooMove : MonoBehaviour
 {
@@ -28,9 +29,12 @@ public class KangarooMove : MonoBehaviour
     ScoreManager scoreManager;
     [SerializeField] AudioClip[] audioClips;
     AudioSource audioSource;
+    public bool once;
+    [SerializeField] Slider jumpPowerSlider;
     // Start is called before the first frame update
     void Start()
     {
+
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
@@ -66,44 +70,52 @@ public class KangarooMove : MonoBehaviour
             anim.SetBool("g", _isGround);
             anim.SetBool("Space", Input.GetKey(KeyCode.Space) && !cameraSwitch.mainActive);
         }
+
+      
     }
 
     void JumpUp()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _isGround)
+        if (Input.GetKeyDown(KeyCode.Space) && _isGround && !once )
         {
-            falseCheck = false;
-            canJump = true;
-            StartCoroutine(nameof(Jumping));
+           
+   
+            StartCoroutine(nameof(JumpingPower));
+            once = true;
             audioSource.PlayOneShot(audioClips[0]);
 
         }
 
-        if (Input.GetKeyUp(KeyCode.Space) && !falseCheck && _isGround)
+        
+
+        if (Input.GetKeyUp(KeyCode.Space)  && _isGround)
         {
-            canJump = false;
-
-        }
-
-        if (Input.GetKeyUp(KeyCode.Space) && canJump && _isGround)
-        {
-
+            once = false;   
             rb.velocity = new Vector3(forward.x * intertia, jumpPower, forward.z * intertia);
             canJump = false;
             audioSource.PlayOneShot(audioClips[1]);
+            jumpPower = 5f;
         }
 
 
     }
 
-    IEnumerator Jumping()
+    IEnumerator JumpingPower()
     {
-        yield return new WaitForSeconds(0.01f);
-        if (Input.GetKey(KeyCode.Space))
+        while (Input.GetKey(KeyCode.Space) && jumpPower <= 10) 
         {
-            falseCheck = true;
+            yield return new WaitForSeconds(1.1f);
+
+            jumpPower += 3;
+
+            jumpPower = jumpPowerSlider.value;
+
+            jumpPowerSlider.DOValue(jumpPower + 3, 1F);
+
 
         }
+        once = false;
+       
     }
 
     void Rotating()

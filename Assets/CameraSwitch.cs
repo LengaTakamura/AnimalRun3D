@@ -9,18 +9,22 @@ public class CameraSwitch : MonoBehaviour
     AudioSource audioSource;
     public bool mainActive = true;
     [SerializeField] AudioClip switchClip;
+    PlayerMove playerMove;
+    KangarooMove kangarooMove;
     // Start is called before the first frame update
     void Start()
     {
         sub .enabled = false;    
         audioSource = GetComponent<AudioSource>();
+        playerMove = GameObject.Find("Player").GetComponent<PlayerMove>();
+        kangarooMove = GameObject.Find("Kangaroo").GetComponent <KangarooMove>();
     }
 
     // Update is called once per frame
     void Update()
     {
         audioSource.Play();
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && playerMove._isGround && kangarooMove._isGround)
         {
             audioSource.PlayOneShot(switchClip);
 
