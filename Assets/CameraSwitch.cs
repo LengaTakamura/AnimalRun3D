@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraSwitch : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class CameraSwitch : MonoBehaviour
     [SerializeField] AudioClip switchClip;
     PlayerMove playerMove;
     KangarooMove kangarooMove;
+    [SerializeField] Slider subSlider;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,12 +35,15 @@ public class CameraSwitch : MonoBehaviour
                 main.enabled = false;
                 mainActive = false;
                 sub.enabled = true;
+                subSlider.gameObject.SetActive(true);
             }
             else 
             {
                 main.enabled = true;
                 mainActive = true;
                 sub.enabled = false;
+                
+                subSlider.gameObject.SetActive(false);
             }
 
         }

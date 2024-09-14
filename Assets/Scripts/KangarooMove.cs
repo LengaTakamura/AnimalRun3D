@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Diagnostics;
+
 
 public class KangarooMove : MonoBehaviour
 {
@@ -34,7 +36,7 @@ public class KangarooMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        once = true;
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
@@ -57,8 +59,15 @@ public class KangarooMove : MonoBehaviour
             Rotating();
             JumpUp();
             BackJump();
+            ResetValue();
+
+           
         }
         GroundedCheck();
+
+        
+
+       
     }
     private void FixedUpdate()
     {
@@ -76,41 +85,44 @@ public class KangarooMove : MonoBehaviour
 
     void JumpUp()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _isGround && !once )
+        if (Input.GetKeyDown(KeyCode.Space) && _isGround  )
         {
-            StartCoroutine(nameof(JumpingPower));
-            once = true;
+            if (once)
+            {
+                StartCoroutine(nameof(JumpingPower));
+
+            }
+            
             audioSource.PlayOneShot(audioClips[0]);
 
         }
 
-        
-
         if (Input.GetKeyUp(KeyCode.Space)  && _isGround)
         {
-            once = false;   
+           
             rb.velocity = new Vector3(forward.x * intertia, jumpPower, forward.z * intertia);
             canJump = false;
             audioSource.PlayOneShot(audioClips[1]);
-            jumpPower = 5f;
+
+            
         }
+
+       
+       
+       
 
 
     }
 
     IEnumerator JumpingPower()
     {
-        while (Input.GetKey(KeyCode.Space) && jumpPower <= 10) 
+        while (Input.GetKey(KeyCode.Space) ) 
         {
-            yield return new WaitForSeconds(1.1f);
-
-            jumpPower += 3;
+            yield return new WaitForSeconds(1f);
 
             jumpPower = jumpPowerSlider.value;
 
             jumpPowerSlider.DOValue(jumpPower + 3, 1F);
-
-
         }
         once = false;
        
@@ -154,6 +166,17 @@ public class KangarooMove : MonoBehaviour
         {        
             transform.rotation = Quaternion.identity;
             rb.velocity = new Vector3(forward.x * intertia * -0.1f, jumpPower * 0.1f, forward.z * intertia * -0.1f);
+        }
+    }
+
+    void ResetValue()
+    {
+        if( !_isGround )
+        {
+            once = true;
+            jumpPowerSlider.value = 6;
+            jumpPower = jumpPowerSlider.value;
+            UnityEngine.Debug.Log(jumpPower);
         }
     }
 

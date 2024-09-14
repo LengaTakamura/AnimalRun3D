@@ -20,7 +20,7 @@ public class StopManager : MonoBehaviour
    
     private void OnTriggerEnter(Collider other)
     {       
-        rb.velocity = new Vector3 (0,rb.velocity.y,0);
+       // rb.velocity = new Vector3 (0,rb.velocity.y,0);
         
         isStop = true;
        
