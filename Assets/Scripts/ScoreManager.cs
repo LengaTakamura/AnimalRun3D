@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class ScoreManager : MonoBehaviour
+public  class ScoreManager : MonoBehaviour
 {
 
     TextMeshProUGUI scoreText;
@@ -14,7 +14,7 @@ public class ScoreManager : MonoBehaviour
 
     [SerializeField] PlayerMove playerMove;
     [SerializeField] KangarooMove kangarooMove;
-    public float finalScore;
+    public static float finalScore;
     TextMeshProUGUI finalScoreText;
     // Start is called before the first frame update
     void Start()
@@ -25,12 +25,6 @@ public class ScoreManager : MonoBehaviour
         }
         catch { }
         finalScoreText = GameObject.Find("FinalScore").GetComponent <TextMeshProUGUI>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
     private void FixedUpdate()
     {
@@ -43,10 +37,10 @@ public class ScoreManager : MonoBehaviour
     {
         scoreText.enabled = false;
          finalScore = score;
-        StartCoroutine(nameof(ScoreActrive));
+        StartCoroutine(nameof(ScoreActive));
     }
 
-    IEnumerator ScoreActrive()
+    IEnumerator ScoreActive()
     {
         yield return new WaitForSeconds(3);
         finalScoreText.color = Color.white;

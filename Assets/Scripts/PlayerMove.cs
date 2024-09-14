@@ -322,6 +322,4 @@ public class PlayerMove : MonoBehaviour
         Running, Idol, Walking, Back, Jumping,
     }
 
-
-
 }
