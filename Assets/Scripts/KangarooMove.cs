@@ -78,8 +78,6 @@ public class KangarooMove : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && _isGround && !once )
         {
-           
-   
             StartCoroutine(nameof(JumpingPower));
             once = true;
             audioSource.PlayOneShot(audioClips[0]);
