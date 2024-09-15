@@ -28,22 +28,27 @@ public class PlayerMove : MonoBehaviour
     public LayerMask GroundLayers;
     public float gravity = -9.81f;
     public float groundDistance = 0.4f; // 接地判定の半径
-   
+    public float time = 0f;
     public float rotationSpeed = 5.0f;
     RaycastHit hit;
     public int hitCount;
     public string collisionObj = "none";
     SceneSystem sceneSystem;
     [SerializeField] StopManager stopManager;
-    [SerializeField]CameraSwitch cameraSwitch;
+    [SerializeField] CameraSwitch cameraSwitch;
     ScoreManager scoreManager;
-    [SerializeField]Slider staminaBar;
+    [SerializeField] Slider staminaBar;
     float defaSta;
     bool isStaminaCounting;
-    public bool staminaAddCounting = true ;
-    float damage = 20f;
+    public bool staminaAddCounting = true;
+    public bool isOk; 
     public float turnPower;
+    bool isStaminaCountingRunning;
 
+    private void Awake()
+    {
+        StartCoroutine(nameof(StartDeray));
+    }
     void Start()
     {
 
@@ -61,9 +66,16 @@ public class PlayerMove : MonoBehaviour
         catch { }
         cameraSwitch = GameObject.Find("CameraSystem").GetComponent<CameraSwitch>();
 
-       
+
 
     }
+    IEnumerator StartDeray()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        isOk = true;
+    }
+
 
     void Update()
     {
@@ -76,21 +88,21 @@ public class PlayerMove : MonoBehaviour
         defaSta = staminaBar.value;
 
         SliderOnOff();
-
-         staminaBar.value = defaSta;  
-        if (cameraSwitch.mainActive  )
+        RePlace();
+        staminaBar.value = defaSta;
+        if (cameraSwitch.mainActive && isOk)
         {
-             Moving();
-   
-             Rotating();
+            Moving();
 
-             Jumpimg();
-            
+            Rotating();
+
+            Jumpimg();
+
         }
         else
-        {          
+        {
             horseState = HorseState.Idol;
-     
+
         }
 
         if (!_isGround)
@@ -99,16 +111,23 @@ public class PlayerMove : MonoBehaviour
         }
 
 
-        if ((horseState == HorseState.Walking || horseState == HorseState.Running) && !isStaminaCounting)
+        if (horseState == HorseState.Walking && !isStaminaCounting)
         {
-            StartCoroutine(nameof(StaminaCount));
+            StartCoroutine(StaminaCount(50f));
             isStaminaCounting = true; // コルーチン実行中のフラグをセット
         }
+
+        if (horseState == HorseState.Running && !isStaminaCountingRunning)
+        {
+            StartCoroutine(StaminaCount(100f));
+            isStaminaCountingRunning = true; // コルーチン実行中のフラグをセット
+        }
+
         // horseState が他の状態に変わった場合はフラグをリセット
         else if ((horseState != HorseState.Walking && horseState != HorseState.Running && horseState != HorseState.Jumping))
         {
             isStaminaCounting = false;
-
+            isStaminaCountingRunning = false;
             if (staminaAddCounting)
             {
                 StartCoroutine(nameof(StaminaAdd));
@@ -117,10 +136,13 @@ public class PlayerMove : MonoBehaviour
             }
         }
 
+
+       
+
     }
     private void FixedUpdate()
     {
-  
+
         if (m_anim)
         {
             m_anim.SetFloat("SpeedX", Mathf.Abs(moveDirection.x));
@@ -136,28 +158,35 @@ public class PlayerMove : MonoBehaviour
             m_anim.SetBool("Jumping", horseState == HorseState.Jumping);
         }
 
-       
+
 
     }
 
-      void Idol()
+    void Idol()
     {
 
         if (rb.velocity.x < 0.1f && rb.velocity.z < 0.1f && _isGround)
         {
             forward = 0f;
             horseState = HorseState.Idol;
+            ResetSpeed();
         }
-        
+
     }
     void Moving()
     {
-
-        if (Input.GetMouseButton(0) && _isGround && !Input.GetKey(KeyCode.Space) && staminaBar.value >= 150 )
+       if( Input.GetMouseButtonDown(0) && _isGround && !Input.GetKey(KeyCode.Space) && staminaBar.value >= 150)
         {
-
-            damage = 100f;
             horseState = HorseState.Walking;
+        }
+
+
+
+
+        if (Input.GetMouseButton(0) && _isGround && !Input.GetKey(KeyCode.Space) && staminaBar.value >= 150)
+        {
+                
+            time += Time.deltaTime;
             _running = false;
             forward = 1f;
             moveDirection = new Vector3(0, 0, forward);
@@ -165,12 +194,28 @@ public class PlayerMove : MonoBehaviour
             moveDirection = new Vector3(_vect.x, 0, _vect.z);
             rb.velocity = moveDirection * speed * 0.1f + (Vector3.up * rb.velocity.y);
 
+            if(time >= 3f)
+            {
+                Running();
+
+            }
+
+
         }
-       
+
+        if (Input.GetMouseButtonUp(0) && speed == 60f && _isGround)
+        {
+            horseState = HorseState.Idol;
+            time = 0f;  
+        }
+
+
+
+
         if (Input.GetMouseButton(1) && _isGround)
         {
             horseState = HorseState.Back;
-            ResetSpeed();
+            
             _running = false;
             forward = -1f;
             moveDirection = new Vector3(0, 0, forward);
@@ -181,6 +226,16 @@ public class PlayerMove : MonoBehaviour
         }
 
     }
+
+    void Running()
+    {
+
+        _running = true;
+        speed = 60f;
+        horseState = HorseState.Running;
+    }
+
+   
 
     void Rotating()
     {
@@ -199,7 +254,7 @@ public class PlayerMove : MonoBehaviour
             this.transform.Rotate(Vector3.up, turnPower * -1);
 
         }
-       
+
     }
     void Jumpimg()
     {
@@ -219,12 +274,12 @@ public class PlayerMove : MonoBehaviour
         {
             intertia = 0;
             horseState = HorseState.Back;
-           
+
         }
     }
     void ResetSpeed()
     {
-        if (_running == false)
+        if (horseState != HorseState.Running)
         {
             speed = 30f;
         }
@@ -237,16 +292,16 @@ public class PlayerMove : MonoBehaviour
         bool sphereHit = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
         bool rayHit = Physics.Raycast(transform.position, Vector3.down, out hit, groundDistance, GroundLayers);
 
-        _isGround =sphereHit  ;
+        _isGround = sphereHit;
 
     }
-   
+
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Water")
         {
-        
+
             sceneSystem.FadeOut();
 
             scoreManager.GameOver();
@@ -254,24 +309,35 @@ public class PlayerMove : MonoBehaviour
             GameOver();
 
         }
-    
+
     }
 
-
-   
-    IEnumerator StaminaCount( )
+    IEnumerator StaminaCount(float damage)
     {
-        
 
-        while (horseState == HorseState.Walking || horseState == HorseState.Running && staminaBar.value >= 150)
+        while ((horseState == HorseState.Walking || horseState == HorseState.Running) && staminaBar.value >= 150)
         {
             yield return new WaitForSeconds(3f);
 
             float sta = staminaBar.value;
             staminaBar.DOValue(sta - damage, 1f);
-        
+
         }
         isStaminaCounting = false;
+    }
+
+    IEnumerator StaminaCountRunning(float damage)
+    {
+
+        while ((horseState == HorseState.Walking || horseState == HorseState.Running) && staminaBar.value >= 150)
+        {
+            yield return new WaitForSeconds(3f);
+
+            float sta = staminaBar.value;
+            staminaBar.DOValue(sta - damage, 1f);
+
+        }
+        isStaminaCountingRunning = false;
     }
 
 
@@ -280,7 +346,7 @@ public class PlayerMove : MonoBehaviour
         while (horseState == HorseState.Idol)
         {
             yield return new WaitForSeconds(3f);
-           
+
             float staAdd = staminaBar.value;
             staminaBar.DOValue(staAdd + 100, 1F);
 
@@ -289,7 +355,7 @@ public class PlayerMove : MonoBehaviour
     }
 
 
-   void SliderOnOff()
+    void SliderOnOff()
     {
         if (!cameraSwitch.mainActive)
         {
@@ -306,6 +372,15 @@ public class PlayerMove : MonoBehaviour
         if (scoreManager.isGameOver)
         {
             _audioSource.Pause();
+        }
+    }
+
+    void RePlace()
+    {
+        if (transform.position.y <= 12)
+        {
+            Vector3 vect = transform.position;
+            transform.position = new Vector3(vect.x + 3, 25f, vect.y + 3);
         }
     }
 

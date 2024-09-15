@@ -1,8 +1,7 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
-using System.Diagnostics;
 
 
 public class KangarooMove : MonoBehaviour
@@ -54,20 +53,14 @@ public class KangarooMove : MonoBehaviour
     {
         if (!cameraSwitch.mainActive)
         {
-
             angle = subCam.transform.eulerAngles.x;
             Rotating();
             JumpUp();
             BackJump();
-            
-
-           
+            jumpPower = jumpPowerSlider.value;
         }
         GroundedCheck();
 
-        
-
-       
     }
     private void FixedUpdate()
     {
@@ -80,19 +73,19 @@ public class KangarooMove : MonoBehaviour
             anim.SetBool("Space", Input.GetKey(KeyCode.Space) && !cameraSwitch.mainActive);
         }
 
-      
+
     }
 
     void JumpUp()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _isGround && !scoreManager.isGameOver )
+        if (Input.GetKeyDown(KeyCode.Space) && _isGround && !scoreManager.isGameOver)
         {
             if (once)
             {
                 StartCoroutine(nameof(JumpingPower));
 
             }
-            
+
             audioSource.PlayOneShot(audioClips[0]);
 
         }
@@ -104,31 +97,36 @@ public class KangarooMove : MonoBehaviour
             canJump = false;
             audioSource.PlayOneShot(audioClips[1]);
 
+         
+        }
+
+        if(!Input.GetKey(KeyCode.Space) )
+        {
             ResetValue();
         }
 
     }
 
-  
+
     IEnumerator JumpingPower()
     {
-        while (Input.GetKey(KeyCode.Space) ) 
+        while (Input.GetKey(KeyCode.Space))
         {
             yield return new WaitForSeconds(1f);
 
-            jumpPower = jumpPowerSlider.value;
+            //jumpPower = jumpPowerSlider.value;
 
             jumpPowerSlider.DOValue(jumpPower + 3, 1F);
         }
         once = false;
-       
+
     }
 
     void Rotating()
     {
 
         float x = Input.GetAxis("Mouse X");
-        
+
 
         // X方向に一定量移動していれば横回転
         if (x > 0.01f)
@@ -142,9 +140,9 @@ public class KangarooMove : MonoBehaviour
 
         }
 
-       
+
     }
-       
+
     public void GroundedCheck()
     {
         // オフセットを計算して球の位置を設定する
@@ -159,7 +157,7 @@ public class KangarooMove : MonoBehaviour
     void BackJump()
     {
         if (Input.GetKeyDown(KeyCode.X))
-        {        
+        {
             transform.rotation = Quaternion.identity;
             rb.velocity = new Vector3(forward.x * intertia * -0.1f, jumpPower * 0.1f, forward.z * intertia * -0.1f);
         }
@@ -167,16 +165,14 @@ public class KangarooMove : MonoBehaviour
 
     void ResetValue()
     {
-        
-            once = true;
-            jumpPowerSlider.value = 1;
-            jumpPower = jumpPowerSlider.value;
-            UnityEngine.Debug.Log(jumpPower);
-        
+        once = true;
+        jumpPowerSlider.value = 1;
+        //jumpPower = jumpPowerSlider.value;
+
     }
 
 
-    
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -198,10 +194,10 @@ public class KangarooMove : MonoBehaviour
             audioSource.Pause();
         }
 
-        if(collision.gameObject.tag == "Hell")
+        if (collision.gameObject.tag == "Hell")
         {
             Vector3 vect = transform.position;
-            transform.position = new Vector3(vect.x,30f,vect.y);
+            transform.position = new Vector3(vect.x, 30f, vect.y);
         }
 
     }

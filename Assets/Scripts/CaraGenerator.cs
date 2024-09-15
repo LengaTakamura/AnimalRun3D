@@ -12,12 +12,12 @@ public class CaraGenerator : MonoBehaviour
     void Awake()
     {
 
-        Spawns.Add((new Vector3(380, 25, -110), new Vector3(160, 25, 110)));
-        Spawns.Add((new Vector3(160, 25, -120), new Vector3(390,25, 110)));
-        Spawns.Add((new Vector3(170, 25, 15), new Vector3(330, 25, 20)));
-        Spawns.Add((new Vector3(330, 25, -110), new Vector3(235, 25, 75)));
-        Spawns.Add((new Vector3(275, 25, -3), new Vector3(343, 25, 67)));
-        Spawns.Add((new Vector3(275, 25, -3), new Vector3(366, 25, -97)));
+        Spawns.Add((new Vector3(380, 20, -110), new Vector3(160, 20, 110)));
+        Spawns.Add((new Vector3(160, 20, -120), new Vector3(390,20, 110)));
+        Spawns.Add((new Vector3(170, 20, 15), new Vector3(330, 20, 20)));
+        Spawns.Add((new Vector3(330, 20, -110), new Vector3(235, 20, 75)));
+        Spawns.Add((new Vector3(275, 20, -3), new Vector3(343, 20, 67)));
+        Spawns.Add((new Vector3(275, 20, -3), new Vector3(366, 20, -97)));
 
         RandomSpawn();
 

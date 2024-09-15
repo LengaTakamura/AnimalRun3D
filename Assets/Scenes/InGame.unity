@@ -154,6 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMove: {fileID: 912255707}
   kangarooMove: {fileID: 245970008}
+  isGameOver: 0
+  bgm: {fileID: 1535306732}
 --- !u!4 &79002895
 Transform:
   m_ObjectHideFlags: 0
