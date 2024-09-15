@@ -16,6 +16,8 @@ public class DotweenFade : MonoBehaviour
 
     public void FadeOut()
     {
+
+    
         DOTween.ToAlpha(
 
             () => image.color,

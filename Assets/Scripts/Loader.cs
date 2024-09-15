@@ -14,4 +14,6 @@ public class Loader : MonoBehaviour
     {
         StartCoroutine(SceneSystem.ForFadeTime("InGame"));
     }
+
+  
 }

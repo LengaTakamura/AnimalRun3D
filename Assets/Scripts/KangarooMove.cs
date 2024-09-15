@@ -85,7 +85,7 @@ public class KangarooMove : MonoBehaviour
 
     void JumpUp()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _isGround  )
+        if (Input.GetKeyDown(KeyCode.Space) && _isGround && !scoreManager.isGameOver )
         {
             if (once)
             {
@@ -193,6 +193,9 @@ public class KangarooMove : MonoBehaviour
 
             sceneSystem.FadeOut();
 
+            scoreManager.GameOver();
+
+            audioSource.Pause();
         }
 
         if(collision.gameObject.tag == "Hell")

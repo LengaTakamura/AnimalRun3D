@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class LoadSceneTitle : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
-        
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public void LoadBackTitle()
     {
-        
+        StartCoroutine(SceneSystem.ForFadeTime("Title"));
+    }
+
+    public void LoadBackToPlay()
+    {
+        StartCoroutine(SceneSystem.ForFadeTime("InGame"));
     }
 }

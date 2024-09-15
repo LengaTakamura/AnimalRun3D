@@ -7,7 +7,6 @@ public class PlayerMove : MonoBehaviour
 {
     public float speed = 30F;
     public float jumpSpeed = 8.0F;
-
     private Vector3 moveDirection;
     Animator m_anim;
     public bool _isGround;
@@ -29,7 +28,7 @@ public class PlayerMove : MonoBehaviour
     public LayerMask GroundLayers;
     public float gravity = -9.81f;
     public float groundDistance = 0.4f; // ê⁄ínîªíËÇÃîºåa
-    public bool isGameover;
+   
     public float rotationSpeed = 5.0f;
     RaycastHit hit;
     public int hitCount;
@@ -44,8 +43,10 @@ public class PlayerMove : MonoBehaviour
     public bool staminaAddCounting = true ;
     float damage = 20f;
     public float turnPower;
+
     void Start()
     {
+
         m_anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
@@ -77,7 +78,7 @@ public class PlayerMove : MonoBehaviour
         SliderOnOff();
 
          staminaBar.value = defaSta;  
-        if (cameraSwitch.mainActive )
+        if (cameraSwitch.mainActive  )
         {
              Moving();
    
@@ -87,11 +88,9 @@ public class PlayerMove : MonoBehaviour
             
         }
         else
-        {
-            
+        {          
             horseState = HorseState.Idol;
-            
-            
+     
         }
 
         if (!_isGround)
@@ -118,13 +117,10 @@ public class PlayerMove : MonoBehaviour
             }
         }
 
-
-
     }
     private void FixedUpdate()
     {
-        
-
+  
         if (m_anim)
         {
             m_anim.SetFloat("SpeedX", Mathf.Abs(moveDirection.x));
@@ -140,8 +136,7 @@ public class PlayerMove : MonoBehaviour
             m_anim.SetBool("Jumping", horseState == HorseState.Jumping);
         }
 
-        
-
+       
 
     }
 
@@ -153,13 +148,10 @@ public class PlayerMove : MonoBehaviour
             forward = 0f;
             horseState = HorseState.Idol;
         }
-
         
     }
     void Moving()
     {
-
-        
 
         if (Input.GetMouseButton(0) && _isGround && !Input.GetKey(KeyCode.Space) && staminaBar.value >= 150 )
         {
@@ -175,7 +167,6 @@ public class PlayerMove : MonoBehaviour
 
         }
        
-
         if (Input.GetMouseButton(1) && _isGround)
         {
             horseState = HorseState.Back;
@@ -246,10 +237,7 @@ public class PlayerMove : MonoBehaviour
         bool sphereHit = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
         bool rayHit = Physics.Raycast(transform.position, Vector3.down, out hit, groundDistance, GroundLayers);
 
-
         _isGround =sphereHit  ;
-
-
 
     }
    
@@ -258,15 +246,15 @@ public class PlayerMove : MonoBehaviour
     {
         if (collision.gameObject.tag == "Water")
         {
-            isGameover = true;
-
+        
             sceneSystem.FadeOut();
 
             scoreManager.GameOver();
 
-        }
-        
+            GameOver();
 
+        }
+    
     }
 
 
@@ -310,6 +298,14 @@ public class PlayerMove : MonoBehaviour
         else
         {
             staminaBar.gameObject.SetActive(true);
+        }
+    }
+
+    void GameOver()
+    {
+        if (scoreManager.isGameOver)
+        {
+            _audioSource.Pause();
         }
     }
 

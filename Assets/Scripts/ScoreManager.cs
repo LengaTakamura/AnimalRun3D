@@ -16,9 +16,12 @@ public  class ScoreManager : MonoBehaviour
     [SerializeField] KangarooMove kangarooMove;
     public static float finalScore;
     TextMeshProUGUI finalScoreText;
+    public bool isGameOver;
+    [SerializeField] AudioSource bgm;
     // Start is called before the first frame update
     void Start()
     {
+        isGameOver = false;
         try 
         {
             scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
@@ -50,11 +53,15 @@ public  class ScoreManager : MonoBehaviour
 
     public void GameOver()
     {
+        isGameOver = true;
+        bgm.Pause();    
         scoreText.enabled = false;
         finalScoreText.DOFade(1f, 10f);
         finalScoreText.text = "GameOver";
+        StartCoroutine(SceneSystem.ForFadeTime("Title"));
     }
 
+    
 
     
 }
