@@ -184,7 +184,7 @@ public class KangarooMove : MonoBehaviour
         {
             _isClear = true;
             scoreManager.ScoreCount();
-            StartCoroutine(sceneSystem.ForFadeTime("Result"));
+            StartCoroutine(SceneSystem.ForFadeTime("Result"));
         }
 
         if (collision.gameObject.tag == "Water")
