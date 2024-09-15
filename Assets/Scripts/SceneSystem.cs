@@ -40,7 +40,7 @@ public class SceneSystem : MonoBehaviour
     {
         StartCoroutine(ForFadeTime("InGame"));
     }
-     public IEnumerator ForFadeTime(string sceneName)
+     public static IEnumerator ForFadeTime(string sceneName)
     {
         yield return new WaitForSeconds(3f);
         SceneManager.LoadScene(sceneName);

@@ -1,10 +1,8 @@
-using System;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
-using UnityEngine.UI;
 using DG.Tweening;
+using System;
+using System.Collections;
+using TMPro;
+using UnityEngine;
 
 public class Scorer : MonoBehaviour
 {
@@ -19,40 +17,33 @@ public class Scorer : MonoBehaviour
     [SerializeField] Vector3 vect;
     void Start()
     {
+   
         MovingUi();
 
-       rankingTitle = GetComponent<TextMeshProUGUI>();
+        rankingTitle = GetComponent<TextMeshProUGUI>();
 
-
-        if (ScoreManager.finalScore == 0)
-        {
-
-            scores[5] = ScoreManager.finalScore;
-
-            Array.Sort(scores);
-
-            GetRanking();
-
-        }
-        else
-        {
-
-            scores[5] = ScoreManager.finalScore;
-
-            Array.Sort(scores);
-
-            GetRanking();
-
-
-
-            Debug.Log("スコアを計算" + ScoreManager.finalScore);
-        }
+        StartCoroutine(nameof(Ranking));
     }
+
+    IEnumerator Ranking()
+    {
+       yield return new WaitForSeconds(2.5f);
+
+        scores[5] = 1000 - ScoreManager.finalScore;
+
+        Array.Sort(scores);
+
+        Array.Reverse(scores);
+
+        GetRanking();
+
+    }
+
     void GetRanking()
     {
         for (int i = 0; i < scores.Length - 1; i++)
         {
-            texts[i].text = "Score " + scores[i];
+            texts[i].text = scores[i].ToString();
 
         }
 

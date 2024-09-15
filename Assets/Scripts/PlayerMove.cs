@@ -79,16 +79,12 @@ public class PlayerMove : MonoBehaviour
          staminaBar.value = defaSta;  
         if (cameraSwitch.mainActive )
         {
-               Moving();
+             Moving();
+   
+             Rotating();
+
+             Jumpimg();
             
-
-
-            if (stopManager.isStop == false)
-            {
-                Rotating();
-
-                Jumpimg();
-            }
         }
         else
         {

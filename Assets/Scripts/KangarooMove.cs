@@ -59,7 +59,7 @@ public class KangarooMove : MonoBehaviour
             Rotating();
             JumpUp();
             BackJump();
-            ResetValue();
+            
 
            
         }
@@ -97,23 +97,19 @@ public class KangarooMove : MonoBehaviour
 
         }
 
-        if (Input.GetKeyUp(KeyCode.Space)  && _isGround)
+        if (Input.GetKeyUp(KeyCode.Space) && _isGround)
         {
-           
+
             rb.velocity = new Vector3(forward.x * intertia, jumpPower, forward.z * intertia);
             canJump = false;
             audioSource.PlayOneShot(audioClips[1]);
 
-            
+            ResetValue();
         }
-
-       
-       
-       
-
 
     }
 
+  
     IEnumerator JumpingPower()
     {
         while (Input.GetKey(KeyCode.Space) ) 
@@ -171,14 +167,16 @@ public class KangarooMove : MonoBehaviour
 
     void ResetValue()
     {
-        if( !_isGround )
-        {
+        
             once = true;
-            jumpPowerSlider.value = 6;
+            jumpPowerSlider.value = 1;
             jumpPower = jumpPowerSlider.value;
             UnityEngine.Debug.Log(jumpPower);
-        }
+        
     }
+
+
+    
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -195,6 +193,12 @@ public class KangarooMove : MonoBehaviour
 
             sceneSystem.FadeOut();
 
+        }
+
+        if(collision.gameObject.tag == "Hell")
+        {
+            Vector3 vect = transform.position;
+            transform.position = new Vector3(vect.x,30f,vect.y);
         }
 
     }

@@ -9,6 +9,7 @@ TagManager:
   - Water
   - Tree
   - kangaroo
+  - Hell
   layers:
   - Default
   - TransparentFX
