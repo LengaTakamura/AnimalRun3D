@@ -97,7 +97,7 @@ public class KangarooMove : MonoBehaviour
                 StartCoroutine(nameof(JumpingPower));
 
             }
-            intertia = 0.5f;
+            intertia = 1f;
             audioSource.PlayOneShot(audioClips[0]);
 
         }
@@ -131,10 +131,10 @@ public class KangarooMove : MonoBehaviour
     {
         while (Input.GetKey(KeyCode.Space))
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
 
 
-            jumpPowerSlider.DOValue(jumpPower + 3, 1F);
+            jumpPowerSlider.DOValue(jumpPower + 5, 0.5F);
         }
         once = false;
 
@@ -245,10 +245,10 @@ public class KangarooMove : MonoBehaviour
     }
     void Slow()
     {
-        if (!_isGround && rb.velocity.y < -1)
+        if (!_isGround && rb.velocity.y < -3)
         {
             Vector3 newVelocity = rb.velocity;
-            newVelocity.y = -3; 
+            newVelocity.y = -3.1f; 
             rb.velocity = newVelocity; 
         }
 
