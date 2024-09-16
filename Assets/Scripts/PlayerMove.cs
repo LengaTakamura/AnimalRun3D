@@ -49,6 +49,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] AudioClip itemSound;
     PlayerMove playerMove;
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] Pauser pauser;
     private void Awake()
     {
         StartCoroutine(nameof(StartDeray));
@@ -85,8 +86,8 @@ public class PlayerMove : MonoBehaviour
     {
         GroundedCheck();
         objforward = transform.forward;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
         
 
         defaSta = staminaBar.value;
@@ -94,7 +95,7 @@ public class PlayerMove : MonoBehaviour
         SliderOnOff();
         RePlace();
         staminaBar.value = defaSta;
-        if (cameraSwitch.mainActive && isOk)
+        if (cameraSwitch.mainActive && isOk && !pauser.isPause)
         {
             Moving();
 
@@ -112,7 +113,6 @@ public class PlayerMove : MonoBehaviour
         {
             horseState = HorseState.Idol;
 
-           
         }
 
         if (!_isGround)
@@ -127,7 +127,7 @@ public class PlayerMove : MonoBehaviour
 
         if(horseState == HorseState.Idol)
         {
-            if (staminaAddCounting)
+            if (staminaAddCounting && !pauser.isPause)
             {
                 StartCoroutine(nameof(StaminaAdd));
                 Debug.Log("heal");
@@ -135,29 +135,33 @@ public class PlayerMove : MonoBehaviour
             }
         }
 
-
-        if (horseState == HorseState.Walking && !isStaminaCounting)
+        if (!pauser.isPause)
         {
-            StartCoroutine(StaminaCount(50f));
-            isStaminaCounting = true; // コルーチン実行中のフラグをセット
+            if (horseState == HorseState.Walking && !isStaminaCounting)
+            {
+                StartCoroutine(StaminaCount(50f));
+                isStaminaCounting = true; // コルーチン実行中のフラグをセット
+            }
+
+            if (horseState == HorseState.Running && !isStaminaCountingRunning)
+            {
+                StartCoroutine(StaminaCountRunning(100f));
+                isStaminaCountingRunning = true; // コルーチン実行中のフラグをセット
+            }
+
+            // horseState が他の状態に変わった場合はフラグをリセット
+            else if ((horseState != HorseState.Walking && horseState != HorseState.Running && horseState != HorseState.Jumping))
+            {
+                isStaminaCounting = false;
+                isStaminaCountingRunning = false;
+
+            }
+
         }
 
-        if (horseState == HorseState.Running && !isStaminaCountingRunning)
-        {
-            StartCoroutine(StaminaCountRunning(100f));
-            isStaminaCountingRunning = true; // コルーチン実行中のフラグをセット
-        }
-
-        // horseState が他の状態に変わった場合はフラグをリセット
-        else if ((horseState != HorseState.Walking && horseState != HorseState.Running && horseState != HorseState.Jumping))
-        {
-            isStaminaCounting = false;
-            isStaminaCountingRunning = false;
-            
-        }
 
 
-       
+
 
     }
     private void FixedUpdate()
@@ -205,8 +209,10 @@ public class PlayerMove : MonoBehaviour
      
         if (Input.GetMouseButton(0) && _isGround && !Input.GetKey(KeyCode.Space) && staminaBar.value >= 150)
         {
-            horseState = HorseState.Walking;   
-            time += Time.deltaTime;
+            horseState = HorseState.Walking;
+
+           time += Time.deltaTime;
+
             _running = false;
             forward = 1f;
             moveDirection = new Vector3(0, 0, forward);
@@ -407,6 +413,16 @@ public class PlayerMove : MonoBehaviour
         {
             staminaBar.gameObject.SetActive(true);
         }
+
+
+        if (pauser.isPause)
+        {
+            staminaBar.gameObject.SetActive(false);
+        }
+        else
+        {
+            staminaBar.gameObject.SetActive(true);
+        }
     }
 
 
@@ -420,6 +436,13 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    private void OnPause()
+    {
+        if (pauser.isPause)
+        {
+            
+        }
+    }
     public enum HorseState
     {
         Running, Idol, Walking, Back, Jumping,

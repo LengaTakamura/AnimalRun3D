@@ -39,6 +39,7 @@ public class KangarooMove : MonoBehaviour
     [SerializeField] AudioClip itemSound;
     [SerializeField] AudioClip clear;
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] Pauser pauser;
     // Start is called before the first frame update
     void Start()
     {
@@ -61,7 +62,7 @@ public class KangarooMove : MonoBehaviour
     {
 
         Slow();
-        if (!cameraSwitch.mainActive && !isGameOver)
+        if (!cameraSwitch.mainActive && !isGameOver && !pauser.isPause)
         {
             angle = subCam.transform.eulerAngles.x;
             Rotating();
@@ -252,6 +253,20 @@ public class KangarooMove : MonoBehaviour
             rb.velocity = newVelocity; 
         }
 
+    }
+
+
+
+    void SliderOnOff()
+    {
+        if (pauser.isPause)
+        {
+            jumpPowerSlider.gameObject.SetActive(false);
+        }
+        else
+        {
+            jumpPowerSlider.gameObject.SetActive(true);
+        }
     }
 }
 

@@ -1,18 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Pauser : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] GameObject playerMoveObj;
+    [SerializeField] GameObject kangarooMoveObj;
+    [SerializeField]CanvasGroup canvasGroup;
+  
+    public bool isPause;
+
+
+    public void Pause()
     {
+        isPause = true; 
+     
+        canvasGroup.gameObject.SetActive(true);
+        Debug.Log("PAuse");
+
         
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ReStart()
     {
-        
+        isPause=false;
+
+        canvasGroup.gameObject.SetActive(false);
+
     }
 }

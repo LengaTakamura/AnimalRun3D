@@ -20,9 +20,13 @@ public  class ScoreManager : MonoBehaviour
     public bool isGameOver;
     [SerializeField] AudioSource bgm;
     [SerializeField] Slider[] sliders;
+    [SerializeField]Pauser pauser;
+    float score2;
     // Start is called before the first frame update
     void Start()
     {
+        
+        score = 0f;
         isGameOver = false;
         try 
         {
@@ -33,7 +37,16 @@ public  class ScoreManager : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        score += Time.deltaTime;
+        if (!pauser.isPause)
+        {
+            score += Time.deltaTime;
+             score2 = score;
+        }
+        else
+        {
+            score2 = score;
+        }
+       
         scoreText.text = score.ToString("F2").PadLeft(6,'0');
 
     }
