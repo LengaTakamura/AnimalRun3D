@@ -60,7 +60,7 @@ public class KangarooMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+       
         Slow();
         if (!cameraSwitch.mainActive && !isGameOver && !pauser.isPause)
         {
@@ -84,9 +84,10 @@ public class KangarooMove : MonoBehaviour
             anim.SetBool("s", canJump && !cameraSwitch.mainActive);
             anim.SetBool("g", _isGround);
             anim.SetBool("Space", Input.GetKey(KeyCode.Space) && !cameraSwitch.mainActive);
+            anim.SetBool("Pause",pauser.isPause);
         }
 
-
+   
     }
 
     void JumpUp()
@@ -257,16 +258,16 @@ public class KangarooMove : MonoBehaviour
 
 
 
-    void SliderOnOff()
-    {
-        if (pauser.isPause)
-        {
-            jumpPowerSlider.gameObject.SetActive(false);
-        }
-        else
-        {
-            jumpPowerSlider.gameObject.SetActive(true);
-        }
-    }
+    //void SliderOnOff()
+    //{
+    //    if (pauser.isPause)
+    //    {
+    //        jumpPowerSlider.gameObject.SetActive(false);
+    //    }
+    //    else
+    //    {
+    //        jumpPowerSlider.gameObject.SetActive(true);
+    //    }
+    //}
 }
 

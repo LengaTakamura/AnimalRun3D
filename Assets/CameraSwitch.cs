@@ -14,6 +14,7 @@ public class CameraSwitch : MonoBehaviour
     KangarooMove kangarooMove;
     [SerializeField] Slider subSlider;
     public int count;
+    [SerializeField] Pauser pauser;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +28,7 @@ public class CameraSwitch : MonoBehaviour
     void Update()
     {
         audioSource.Play();
-        if (Input.GetKeyDown(KeyCode.C) && playerMove._isGround && kangarooMove._isGround)
+        if (Input.GetKeyDown(KeyCode.C) && playerMove._isGround && kangarooMove._isGround && !pauser.isPause )
         {
             audioSource.PlayOneShot(switchClip);
 

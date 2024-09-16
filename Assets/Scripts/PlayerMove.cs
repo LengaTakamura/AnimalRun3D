@@ -125,9 +125,9 @@ public class PlayerMove : MonoBehaviour
             horseState = HorseState.Walking;
         }
 
-        if(horseState == HorseState.Idol)
+        if(horseState == HorseState.Idol )
         {
-            if (staminaAddCounting && !pauser.isPause)
+            if (staminaAddCounting )
             {
                 StartCoroutine(nameof(StaminaAdd));
                 Debug.Log("heal");
@@ -333,12 +333,21 @@ public class PlayerMove : MonoBehaviour
     {
         if (collision.gameObject.tag == "Water")
         {
-           
-            scoreManager.GameOver();
+            if (isOk)
+            {
+                scoreManager.GameOver();
 
-            sceneSystem.FadeOut();
+                sceneSystem.FadeOut();
 
-            anim.Stop();
+                anim.Stop();
+
+            }
+            else
+            {
+                Vector3 vect = transform.position;
+                transform.position = new Vector3(vect.x, 30f, vect.y);
+            }
+            
         }
 
         if(collision.gameObject.tag == "Item")
@@ -391,7 +400,7 @@ public class PlayerMove : MonoBehaviour
 
     IEnumerator StaminaAdd()
     {
-        while (horseState == HorseState.Idol)
+        while (horseState == HorseState.Idol && !pauser.isPause)
         {
             yield return new WaitForSeconds(3f);
 
@@ -415,14 +424,6 @@ public class PlayerMove : MonoBehaviour
         }
 
 
-        if (pauser.isPause)
-        {
-            staminaBar.gameObject.SetActive(false);
-        }
-        else
-        {
-            staminaBar.gameObject.SetActive(true);
-        }
     }
 
 
