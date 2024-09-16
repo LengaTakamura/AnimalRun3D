@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Linq;
 
 public  class ScoreManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public  class ScoreManager : MonoBehaviour
     TextMeshProUGUI finalScoreText;
     public bool isGameOver;
     [SerializeField] AudioSource bgm;
+    [SerializeField] Slider[] sliders;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +42,7 @@ public  class ScoreManager : MonoBehaviour
     {
         scoreText.enabled = false;
          finalScore = score;
-        StartCoroutine(nameof(ScoreActive));
+        //StartCoroutine(nameof(ScoreActive));
     }
 
     IEnumerator ScoreActive()
@@ -54,11 +56,23 @@ public  class ScoreManager : MonoBehaviour
     public void GameOver()
     {
         isGameOver = true;
+        sliders[0].gameObject.SetActive(false);
+        sliders[1].gameObject.SetActive(false);
+        kangarooMove.enabled = false;
+        playerMove.enabled = false;
         bgm.Pause();    
         scoreText.enabled = false;
         finalScoreText.DOFade(1f, 10f);
         finalScoreText.text = "GameOver";
         StartCoroutine(SceneSystem.ForFadeTime("Title"));
+    }
+
+    public void Clear()
+    {
+        sliders[0].gameObject.SetActive(false);
+        sliders[1].gameObject.SetActive(false);
+        kangarooMove.enabled = false;
+        playerMove.enabled = false;
     }
 
     

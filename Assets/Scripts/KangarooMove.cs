@@ -1,4 +1,5 @@
 using DG.Tweening;
+using JetBrains.Annotations;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class KangarooMove : MonoBehaviour
     public float gravity = -9.81f;
     public float groundDistance = 0.4f; // ê⁄ínîªíËÇÃîºåa
     RaycastHit hit;
+    RaycastHit hitt;
     Animator anim;
     CameraSwitch cameraSwitch;
     [SerializeField] Camera subCam;
@@ -32,9 +34,13 @@ public class KangarooMove : MonoBehaviour
     AudioSource audioSource;
     public bool once;
     [SerializeField] Slider jumpPowerSlider;
+    public static float jumpScore;
+    [SerializeField] AudioClip itemSound;
+    [SerializeField] AudioClip clear;
     // Start is called before the first frame update
     void Start()
     {
+        jumpScore = 0;
         once = true;
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
@@ -51,6 +57,8 @@ public class KangarooMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        Slow();
         if (!cameraSwitch.mainActive)
         {
             angle = subCam.transform.eulerAngles.x;
@@ -58,6 +66,8 @@ public class KangarooMove : MonoBehaviour
             JumpUp();
             BackJump();
             jumpPower = jumpPowerSlider.value;
+            Debug.Log(rb.velocity.y);
+            
         }
         GroundedCheck();
 
@@ -85,7 +95,7 @@ public class KangarooMove : MonoBehaviour
                 StartCoroutine(nameof(JumpingPower));
 
             }
-
+            intertia = 0.5f;
             audioSource.PlayOneShot(audioClips[0]);
 
         }
@@ -97,12 +107,19 @@ public class KangarooMove : MonoBehaviour
             canJump = false;
             audioSource.PlayOneShot(audioClips[1]);
 
-         
         }
 
         if(!Input.GetKey(KeyCode.Space) )
         {
             ResetValue();
+            
+        }
+        else
+        {
+            if (jumpPower >= 9.5f)
+            {
+                intertia = 5;
+            }
         }
 
     }
@@ -114,7 +131,6 @@ public class KangarooMove : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
 
-            //jumpPower = jumpPowerSlider.value;
 
             jumpPowerSlider.DOValue(jumpPower + 3, 1F);
         }
@@ -171,20 +187,26 @@ public class KangarooMove : MonoBehaviour
 
     }
 
-
-
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
         {
+
             _isClear = true;
+
+            audioSource.PlayOneShot(clear);
+
+            scoreManager.Clear();
+
             scoreManager.ScoreCount();
+
             StartCoroutine(SceneSystem.ForFadeTime("Result"));
         }
 
         if (collision.gameObject.tag == "Water")
         {
+            
+
             isGameOver = true;
 
             sceneSystem.FadeOut();
@@ -192,12 +214,34 @@ public class KangarooMove : MonoBehaviour
             scoreManager.GameOver();
 
             audioSource.Pause();
+        
         }
 
         if (collision.gameObject.tag == "Hell")
         {
             Vector3 vect = transform.position;
             transform.position = new Vector3(vect.x, 30f, vect.y);
+        }
+
+        if (collision.gameObject.tag == "Item")
+        {
+            audioSource.PlayOneShot(itemSound);
+            ScoreManager.score -= 10f;
+            Destroy(collision.gameObject);
+
+        }
+
+       
+
+    }
+   
+    void Slow()
+    {
+        if (!_isGround && rb.velocity.y < -1)
+        {
+            Vector3 newVelocity = rb.velocity;
+            newVelocity.y = -3; 
+            rb.velocity = newVelocity; 
         }
 
     }

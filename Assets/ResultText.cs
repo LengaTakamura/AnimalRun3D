@@ -9,6 +9,7 @@ public class ResultText : MonoBehaviour
     ScoreManager scoreManager;
     TextMeshProUGUI resultText;
     float score;
+  
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +21,7 @@ public class ResultText : MonoBehaviour
     IEnumerator Result()
     {
         yield return new WaitForSeconds(2.5f);
-        resultText.text = "Score:" + (1000 - ScoreManager.finalScore).ToString("F2").PadLeft(6, '0');
+        resultText.text = "Score:" + ((1000 - ScoreManager.finalScore)).ToString("F0").PadLeft(5, '0');
     }
    
 }

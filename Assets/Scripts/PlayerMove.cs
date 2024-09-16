@@ -44,7 +44,8 @@ public class PlayerMove : MonoBehaviour
     public bool isOk; 
     public float turnPower;
     bool isStaminaCountingRunning;
-
+    [SerializeField] AudioClip itemSound;
+    PlayerMove playerMove;
     private void Awake()
     {
         StartCoroutine(nameof(StartDeray));
@@ -311,12 +312,19 @@ public class PlayerMove : MonoBehaviour
     {
         if (collision.gameObject.tag == "Water")
         {
+           
+            scoreManager.GameOver();
 
             sceneSystem.FadeOut();
 
-            scoreManager.GameOver();
 
-            GameOver();
+        }
+
+        if(collision.gameObject.tag == "Item")
+        {
+            _audioSource.PlayOneShot(itemSound);
+            ScoreManager.score -= 10f;
+            Destroy(collision.gameObject);
 
         }
 
@@ -377,17 +385,11 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    void GameOver()
-    {
-        if (scoreManager.isGameOver)
-        {
-            _audioSource.Pause();
-        }
-    }
+
 
     void RePlace()
     {
-        if (transform.position.y <= 12)
+        if (transform.position.y <= 9)
         {
             Vector3 vect = transform.position;
             transform.position = new Vector3(vect.x + 3, 25f, vect.y + 3);

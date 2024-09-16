@@ -13,6 +13,7 @@ public class CameraSwitch : MonoBehaviour
     PlayerMove playerMove;
     KangarooMove kangarooMove;
     [SerializeField] Slider subSlider;
+    public int count;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +40,7 @@ public class CameraSwitch : MonoBehaviour
             }
             else 
             {
+                
                 main.enabled = true;
                 mainActive = true;
                 sub.enabled = false;

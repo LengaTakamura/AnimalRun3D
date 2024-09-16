@@ -10,6 +10,7 @@ TagManager:
   - Tree
   - kangaroo
   - Hell
+  - Item
   layers:
   - Default
   - TransparentFX

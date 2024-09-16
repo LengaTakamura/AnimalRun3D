@@ -11,6 +11,8 @@ public class DotoweenMove : MonoBehaviour
     private void Start()
     {
         DotweenUI();
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
     public void DotweenUI()
     {

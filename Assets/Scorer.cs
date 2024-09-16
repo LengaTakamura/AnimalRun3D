@@ -43,7 +43,7 @@ public class Scorer : MonoBehaviour
     {
         for (int i = 0; i < scores.Length - 1; i++)
         {
-            texts[i].text = scores[i].ToString();
+            texts[i].text = scores[i].ToString("F0").PadLeft(5, '0');
 
         }
 
