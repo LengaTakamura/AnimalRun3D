@@ -9,10 +9,11 @@ public class SoundManager : MonoBehaviour
     bool _isPlayingIdol;
     bool _isPlayingWalk;
     bool _isPlayingRun;
-
+   [SerializeField] ScoreManager _scoreManager;
     // Start is called before the first frame update
     void Start()
     {
+        
         _playerMove = GetComponent<PlayerMove>();
         _audioSource = GetComponent<AudioSource>();
         _isPlayingIdol = true;
@@ -23,38 +24,44 @@ public class SoundManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_playerMove.horseState == PlayerMove.HorseState.Running)
+        if (!_scoreManager.isGameOver)
         {
 
-            if (_isPlayingRun)
+            if (_playerMove.horseState == PlayerMove.HorseState.Running)
             {
-                _audioSource.PlayOneShot(clip[0]);
-                _isPlayingRun = false;
-                StartCoroutine(WaitSecondsR(1f));
+
+                if (_isPlayingRun)
+                {
+                    _audioSource.PlayOneShot(clip[0]);
+                    _isPlayingRun = false;
+                    StartCoroutine(WaitSecondsR(1f));
+                }
+            }
+            else if (_playerMove.horseState == PlayerMove.HorseState.Walking)
+            {
+
+                if (_isPlayingWalk)
+                {
+                    _audioSource.PlayOneShot(clip[1]);
+                    _isPlayingWalk = false;
+                    StartCoroutine(WaitSecondsW(0.8f));
+                }
+            }
+            else if (_playerMove.horseState != PlayerMove.HorseState.Jumping)
+            {
+
+                if (_isPlayingIdol)
+                {
+
+                    _audioSource.PlayOneShot(clip[2]);
+                    _isPlayingIdol = false;
+                    StartCoroutine(WaitSeconds(3f));
+                }
+
             }
         }
-        else if (_playerMove.horseState == PlayerMove.HorseState.Walking)
-        {
+ 
 
-            if (_isPlayingWalk)
-            {
-                _audioSource.PlayOneShot(clip[1]);
-                _isPlayingWalk = false;
-                StartCoroutine(WaitSecondsW(0.8f));
-            }
-        }
-        else if (_playerMove.horseState != PlayerMove.HorseState.Jumping)
-        {
-
-            if (_isPlayingIdol)
-            {
-               
-                _audioSource.PlayOneShot(clip[2]);
-                _isPlayingIdol = false;
-                StartCoroutine(WaitSeconds(3f));
-            }
-
-        }
     }
     IEnumerator WaitSeconds(float second)
     {

@@ -61,7 +61,7 @@ public class KangarooMove : MonoBehaviour
     {
 
         Slow();
-        if (!cameraSwitch.mainActive)
+        if (!cameraSwitch.mainActive && !isGameOver)
         {
             angle = subCam.transform.eulerAngles.x;
             Rotating();

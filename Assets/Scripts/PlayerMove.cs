@@ -10,6 +10,7 @@ public class PlayerMove : MonoBehaviour
     public float jumpSpeed = 8.0F;
     private Vector3 moveDirection;
     Animator m_anim;
+    Animation anim;
     public bool _isGround;
     float forward = 0f;
     Rigidbody rb;
@@ -54,7 +55,7 @@ public class PlayerMove : MonoBehaviour
     }
     void Start()
     {
-
+        anim = GetComponent<Animation>();
         m_anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         _audioSource = GetComponent<AudioSource>();
@@ -331,7 +332,7 @@ public class PlayerMove : MonoBehaviour
 
             sceneSystem.FadeOut();
 
-
+            anim.Stop();
         }
 
         if(collision.gameObject.tag == "Item")
