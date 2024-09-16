@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,6 +47,7 @@ public class PlayerMove : MonoBehaviour
     bool isStaminaCountingRunning;
     [SerializeField] AudioClip itemSound;
     PlayerMove playerMove;
+    [SerializeField] TextMeshProUGUI scoreText;
     private void Awake()
     {
         StartCoroutine(nameof(StartDeray));
@@ -99,10 +101,16 @@ public class PlayerMove : MonoBehaviour
 
             Jumpimg();
 
+            if(staminaBar.value <= 150)
+            {
+                horseState = HorseState.Idol;
+            }
+
         }
         else
         {
             horseState = HorseState.Idol;
+
            
         }
 
@@ -110,7 +118,21 @@ public class PlayerMove : MonoBehaviour
         {
             horseState = HorseState.Jumping;
         }
-       
+
+        if (Input.GetMouseButton(0) && !_isGround && !isOk)
+        {
+            horseState = HorseState.Walking;
+        }
+
+        if(horseState == HorseState.Idol)
+        {
+            if (staminaAddCounting)
+            {
+                StartCoroutine(nameof(StaminaAdd));
+                Debug.Log("heal");
+                staminaAddCounting = false;
+            }
+        }
 
 
         if (horseState == HorseState.Walking && !isStaminaCounting)
@@ -179,12 +201,10 @@ public class PlayerMove : MonoBehaviour
             horseState = HorseState.Walking;
         }
 
-      
-
-
+     
         if (Input.GetMouseButton(0) && _isGround && !Input.GetKey(KeyCode.Space) && staminaBar.value >= 150)
         {
-                
+            horseState = HorseState.Walking;   
             time += Time.deltaTime;
             _running = false;
             forward = 1f;
@@ -202,21 +222,13 @@ public class PlayerMove : MonoBehaviour
 
         }
 
-        if (!Input.GetMouseButton(1)&& !Input.GetMouseButton(0) && _isGround)
+        if (!Input.GetMouseButton(1)&& !Input.GetMouseButton(0) && _isGround && staminaBar.value >= 150)
         {
             horseState = HorseState.Idol;
             ResetSpeed();
             time = 0f;
-            if (staminaAddCounting)
-            {
-                StartCoroutine(nameof(StaminaAdd));
-                Debug.Log("heal");
-                staminaAddCounting = false;
-            }
+            
         }
-
-
-
 
         if (Input.GetMouseButton(1) && _isGround)
         {
@@ -265,6 +277,8 @@ public class PlayerMove : MonoBehaviour
             this.transform.Rotate(Vector3.up, turnPower * -1);
 
         }
+
+       
 
     }
     void Jumpimg()
@@ -324,10 +338,19 @@ public class PlayerMove : MonoBehaviour
         {
             _audioSource.PlayOneShot(itemSound);
             ScoreManager.score -= 10f;
+            scoreText.color = Color.green;
+            StartCoroutine(TextColorChange());
+
             Destroy(collision.gameObject);
 
         }
 
+    }
+
+    IEnumerator TextColorChange()
+    {
+        yield return new WaitForSeconds(0.5f);
+        scoreText.color = Color.white;
     }
 
     IEnumerator StaminaCount(float damage)

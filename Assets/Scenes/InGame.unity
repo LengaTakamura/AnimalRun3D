@@ -520,7 +520,7 @@ MonoBehaviour:
   intertia: 0.5
   canJump: 0
   falseCheck: 0
-  turnPower: 1.7
+  turnPower: 2
   GroundedOffset: -0.14
   GroundedRadius: 0.2
   GroundLayers:
@@ -538,6 +538,7 @@ MonoBehaviour:
   jumpPowerSlider: {fileID: 1325782354}
   itemSound: {fileID: 8300000, guid: 91e43c6fb51abc54c80e70195c7df04d, type: 3}
   clear: {fileID: 8300000, guid: 8e556f41de50bcc42a8823a56c02dd73, type: 3}
+  scoreText: {fileID: 1083670123}
 --- !u!65 &245970015
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3619,9 +3620,17 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 52251318779949315, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
+      propertyPath: intertia
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 52251318779949315, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: itemSound
       value: 
       objectReference: {fileID: 8300000, guid: 91e43c6fb51abc54c80e70195c7df04d, type: 3}
+    - target: {fileID: 52251318779949315, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
+      propertyPath: scoreText
+      value: 
+      objectReference: {fileID: 1083670123}
     - target: {fileID: 52251318779949315, guid: 7dbd56f94ad6f0c449105212fe1495c8, type: 3}
       propertyPath: turnPower
       value: 1

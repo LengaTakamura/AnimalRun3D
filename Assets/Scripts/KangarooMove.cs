@@ -1,6 +1,7 @@
 using DG.Tweening;
 using JetBrains.Annotations;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,6 +38,7 @@ public class KangarooMove : MonoBehaviour
     public static float jumpScore;
     [SerializeField] AudioClip itemSound;
     [SerializeField] AudioClip clear;
+    [SerializeField] TextMeshProUGUI scoreText;
     // Start is called before the first frame update
     void Start()
     {
@@ -66,7 +68,7 @@ public class KangarooMove : MonoBehaviour
             JumpUp();
             BackJump();
             jumpPower = jumpPowerSlider.value;
-            Debug.Log(rb.velocity.y);
+          
             
         }
         GroundedCheck();
@@ -118,7 +120,7 @@ public class KangarooMove : MonoBehaviour
         {
             if (jumpPower >= 9.5f)
             {
-                intertia = 5;
+                intertia = 10;
             }
         }
 
@@ -227,14 +229,20 @@ public class KangarooMove : MonoBehaviour
         {
             audioSource.PlayOneShot(itemSound);
             ScoreManager.score -= 10f;
+            scoreText.color = Color.green;
+            StartCoroutine(TextColorChange());
             Destroy(collision.gameObject);
 
         }
-
+        
        
 
     }
-   
+    IEnumerator TextColorChange()
+    {
+        yield return new WaitForSeconds(0.5f);
+        scoreText.color = Color.white;
+    }
     void Slow()
     {
         if (!_isGround && rb.velocity.y < -1)
